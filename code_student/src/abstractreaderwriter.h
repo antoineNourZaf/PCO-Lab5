@@ -3,7 +3,7 @@
 
 class AbstractReaderWriter {
 public:
-    AbstractReaderWriter(int tpi, AbstractReaderWriter*);
+    AbstractReaderWriter();
     virtual ~AbstractReaderWriter();
     virtual void lockReading() = 0;
     virtual void lockWriting() = 0;

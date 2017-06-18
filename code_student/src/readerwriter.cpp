@@ -1,5 +1,6 @@
 #include "abstractreaderwriter.h"
 
- ReaderWriterSemaphore::ReaderWriterSemaphore(){
+
+ReaderWriterSemaphore::ReaderWriterSemaphore(){
 
 }
