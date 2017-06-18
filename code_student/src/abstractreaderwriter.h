@@ -19,8 +19,6 @@ public:
 
 
 class ReaderWriterMutex : public AbstractReaderWriter {
-
-
 public:
     virtual ~ReaderWriterMutex();
     ReaderWriterMutex();

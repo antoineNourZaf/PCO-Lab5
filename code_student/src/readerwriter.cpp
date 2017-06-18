@@ -4,25 +4,46 @@
 #include "abstractreaderwriter.h"
 
 // ABSTRACT
-AbstractReaderWriter::AbstractReaderWriter(){
+AbstractReaderWriter::AbstractReaderWriter() {
 
 }
 
-AbstractReaderWriter::~AbstractReaderWriter(){
+AbstractReaderWriter::~AbstractReaderWriter() {
 
 }
 
 
 // MUTEX
-//ReaderWriterMutex::ReaderWriterMutex() {} // TODO
-//ReaderWriterMutex::~ReaderWriterMutex() {}
+ReaderWriterMutex::~ReaderWriterMutex() {
+
+}
+
+ReaderWriterMutex::ReaderWriterMutex() {
+
+}
+void ReaderWriterMutex::lockReading() {
+
+}
+void ReaderWriterMutex::lockWriting() {
+
+}
+void ReaderWriterMutex::unlockReading() {
+
+}
+void ReaderWriterMutex::unlockWriting() {
+
+}
 
 
 // SEMAPHORE
 ReaderWriterSemaphore::ReaderWriterSemaphore() :
-    mutex(1), fifo(1), writer(1), nbReader(0)
-{}
+    mutex(1), fifo(1), writer(1), nbReader(0) {
 
+}
+
+ReaderWriterSemaphore::~ReaderWriterSemaphore() {
+
+}
 
 void ReaderWriterSemaphore::lockReading() {
     // le premier lecteur va vérouiller
