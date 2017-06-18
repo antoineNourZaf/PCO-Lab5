@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 
     // Create the resource manager object
     AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphore();
+    SynchroController *syncCtrl = SynchroController::getInstance();
 
     ReaderThread *readers[NB_READER];
     WriterThread *writers[NB_WRITER];
@@ -27,12 +28,12 @@ int main(int argc, char *argv[])
     // Readers
     for(int t = 0; t<NB_READER; t++){
         cout << "Creating the reader " << t << endl;
-        readers[t] = new ReaderThread(t,protocoleSema);
+        readers[t] = new ReaderThread(t,protocoleSema,syncCtrl);
         readers[t]->start();
     }
     for(int t = 0; t<NB_WRITER; t++){
         cout << "Creating the writer " << t << endl;
-        writers[t] = new WriterThread(t,protocoleSema);
+        writers[t] = new WriterThread(t,protocoleSema,syncCtrl);
         writers[t]->start();
     }
     for(int t=0; t<NB_READER; t++) {
