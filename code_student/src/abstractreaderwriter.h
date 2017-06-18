@@ -1,6 +1,8 @@
 #ifndef ABSTRACTREADERWRITER_H
 #define ABSTRACTREADERWRITER_H
 
+#include "osemaphore.h"
+
 class AbstractReaderWriter {
 public:
     AbstractReaderWriter();
@@ -11,22 +13,39 @@ public:
     virtual void unlockWriting() = 0;
 };
 
+// ===============================================
+
+
 class ReaderWriterMutex : public AbstractReaderWriter {
+
+
 public:
-    ReaderWriterMutex();
-    void lockReading();
-    void lockWriting();
-    void unlockReading();
-    void unlockWriting();
+    virtual ~AbstractReaderWriter();
+    virtual void lockReading();
+    virtual void lockWriting();
+    virtual void unlockReading();
+    virtual void unlockWriting();
 };
 
+
+// ===============================================
+
+
 class ReaderWriterSemaphore : public AbstractReaderWriter {
+protected:
+    OSemaphore mutex; // accès à la nbReaders
+    int nbReader;
+
+    OSemaphore fifo; // file d'attente pour tout le monde
+
+    OSemaphore writer; // le premier lecteur bloque les rédacteurs ET un rédacteur bloque tt le monde
 public:
     ReaderWriterSemaphore();
-    void lockReading();
-    void lockWriting();
-    void unlockReading();
-    void unlockWriting();
+    virtual ~ReaderWriterSemaphore();
+    virtual void lockReading();
+    virtual void lockWriting();
+    virtual void unlockReading();
+    virtual void unlockWriting();
 };
 
 
