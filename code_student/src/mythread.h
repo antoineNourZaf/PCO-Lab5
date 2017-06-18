@@ -4,9 +4,10 @@
 #include <QThread>
 #include "abstractreaderwriter.h"
 
+
 class Mythread : public QThread
 {
-private:
+protected:
     AbstractReaderWriter *readerWriter;
 public:
     int tid;

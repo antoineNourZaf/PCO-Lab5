@@ -1,4 +1,6 @@
 #include "mythread.h"
+#include <iostream>
+using namespace std;
 
 Mythread::Mythread(int threadId, AbstractReaderWriter* protcole)
 {
@@ -13,7 +15,7 @@ ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protcole):Mythrea
 void ReaderThread::run(){
     while(1) {
     readerWriter->lockReading();
-    std::cout << "Task " << tid << ": écriture" << std::endl;
+    cout << "Task " << tid << ": écriture" << endl;
     readerWriter->unlockReading();
     }
 }
@@ -24,7 +26,7 @@ WriterThread::WriterThread(int threadId, AbstractReaderWriter* protcole): Mythre
 void WriterThread::run(){
     while(1) {
     readerWriter->lockWriting();
-    std::cout << "Task " << tid << ": écriture" << std::endl;
+    cout << "Task " << tid << ": écriture" << endl;
     readerWriter->unlockWriting();
     }
 }
