@@ -21,6 +21,7 @@ class ReaderWriterMutex : public AbstractReaderWriter {
 
 public:
     virtual ~ReaderWriterMutex();
+    ReaderWriterMutex();
     virtual void lockReading();
     virtual void lockWriting();
     virtual void unlockReading();
@@ -39,6 +40,7 @@ protected:
     OSemaphore fifo; // file d'attente pour tout le monde
 
     OSemaphore writer; // le premier lecteur bloque les rédacteurs ET un rédacteur bloque tt le monde
+
 public:
     ReaderWriterSemaphore();
     virtual ~ReaderWriterSemaphore();
