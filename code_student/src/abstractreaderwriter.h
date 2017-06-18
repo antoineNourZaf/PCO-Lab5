@@ -12,11 +12,21 @@ public:
 };
 
 class ReaderWriterMutex : public AbstractReaderWriter {
-
+public:
+    ReaderWriterMutex();
+    void lockReading();
+    void lockWriting();
+    void unlockReading();
+    void unlockWriting();
 };
 
 class ReaderWriterSemaphore : public AbstractReaderWriter {
-
+public:
+    ReaderWriterSemaphore();
+    void lockReading();
+    void lockWriting();
+    void unlockReading();
+    void unlockWriting();
 };
 
 
