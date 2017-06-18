@@ -16,7 +16,7 @@ Mythread::Mythread(int threadId, AbstractReaderWriter* protocole, const QString&
 
 }
 
-ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protocole) : Mythread(threadId,protocole) {
+ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protocole) : MyThread(threadId,protocole) {
 
 }
 
@@ -30,7 +30,7 @@ void ReaderThread::run() {
     }
 }
 
-WriterThread::WriterThread(int threadId, AbstractReaderWriter* protocole) : Mythread(threadId,protocole) {
+WriterThread::WriterThread(int threadId, AbstractReaderWriter* protocole) : MyThread(threadId,protocole) {
 }
 
 void WriterThread::run() {
