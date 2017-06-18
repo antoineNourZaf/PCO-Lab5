@@ -20,7 +20,7 @@ class ReaderWriterMutex : public AbstractReaderWriter {
 
 
 public:
-    virtual ~AbstractReaderWriter();
+    virtual ~ReaderWriterMutex();
     virtual void lockReading();
     virtual void lockWriting();
     virtual void unlockReading();
