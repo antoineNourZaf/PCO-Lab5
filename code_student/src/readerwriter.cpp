@@ -4,15 +4,18 @@
 #include "abstractreaderwriter.h"
 
 // ABSTRACT
-AbstractReaderWriter::AbstractReaderWriter()
-{}
-AbstractReaderWriter::~AbstractReaderWriter()
-{}
+AbstractReaderWriter::AbstractReaderWriter(){
+
+}
+
+AbstractReaderWriter::~AbstractReaderWriter(){
+
+}
+
 
 // MUTEX
 //ReaderWriterMutex::ReaderWriterMutex() {} // TODO
 //ReaderWriterMutex::~ReaderWriterMutex() {}
-
 
 
 // SEMAPHORE

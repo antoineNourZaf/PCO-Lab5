@@ -2,31 +2,43 @@
 #include <iostream>
 using namespace std;
 
-Mythread::Mythread(int threadId, AbstractReaderWriter* protcole)
+MyThread::MyThread(int threadId, AbstractReaderWriter* protocole)
 {
     this->tid = threadId;
-    this->readerWriter = protcole;
+    this->readerWriter = protocole;
 }
 
-ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protcole):Mythread(threadId,protcole){
+MyThread::MyThread(int threadId, AbstractReaderWriter* protocole, const QString& nom) {
+
+    this->tid = threadId;
+    this->readerWriter = protocole;
+    QThread::setObjectName(nom);
 
 }
 
-void ReaderThread::run(){
-    while(1) {
-    readerWriter->lockReading();
-    cout << "Task " << tid << ": écriture" << endl;
-    readerWriter->unlockReading();
+ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protocole) : MyThread(threadId,protocole) {
+
+}
+
+void ReaderThread::run() {
+
+    while (true) {
+
+        readerWriter->lockReading();
+        cout << "Task " << tid << ": lecture" << endl;
+        readerWriter->unlockReading();
     }
 }
 
-WriterThread::WriterThread(int threadId, AbstractReaderWriter* protcole): Mythread(threadId,protcole){
+WriterThread::WriterThread(int threadId, AbstractReaderWriter* protocole) : MyThread(threadId,protocole) {
 }
 
-void WriterThread::run(){
-    while(1) {
-    readerWriter->lockWriting();
-    cout << "Task " << tid << ": écriture" << endl;
-    readerWriter->unlockWriting();
+void WriterThread::run() {
+
+    while (true) {
+
+        readerWriter->lockWriting();
+        cout << "Task " << tid << ": écriture" << endl;
+        readerWriter->unlockWriting();
     }
 }
