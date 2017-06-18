@@ -25,5 +25,5 @@ HEADERS  +=  \
     src/osemaphore.h \
     src/owaitcondition.h \
     src/ohoaremonitor.h \
-    src/mythread.h \
-    src/abstractreaderwriter.h
+    src/abstractreaderwriter.h \
+    src/mythread.h
