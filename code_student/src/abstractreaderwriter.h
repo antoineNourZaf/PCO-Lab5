@@ -13,20 +13,11 @@ public:
     virtual void unlockWriting() = 0;
 };
 
+// ===============================================
 
-/**
- * @brief The ReaderWriterMutex class
- * Priorité lecteurs
- */
+
 class ReaderWriterMutex : public AbstractReaderWriter {
-protected:
-    OSemaphore mutex; // accès à la ressource
 
-    OSemaphore readerBlocker; // file d'attente des lecteurs
-    int nbReader;
-
-    OSemaphore writerBlocker; // file d'attente des rédacteurs
-    int nbWriters;
 
 public:
     virtual ~AbstractReaderWriter();
@@ -37,11 +28,20 @@ public:
 };
 
 
+// ===============================================
+
 
 class ReaderWriterSemaphore : public AbstractReaderWriter {
 protected:
+    OSemaphore mutex; // accès à la nbReaders
+    int nbReader;
 
-    virtual ~AbstractReaderWriter();
+    OSemaphore fifo; // file d'attente pour tout le monde
+
+    OSemaphore writer; // le premier lecteur bloque les rédacteurs ET un rédacteur bloque tt le monde
+public:
+    ReaderWriterSemaphore();
+    virtual ~ReaderWriterSemaphore();
     virtual void lockReading();
     virtual void lockWriting();
     virtual void unlockReading();
