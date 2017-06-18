@@ -5,13 +5,14 @@
 #include "abstractreaderwriter.h"
 
 
-class Mythread : public QThread
-{
+class Mythread : public QThread {
 protected:
+
     AbstractReaderWriter *readerWriter;
 public:
+
     int tid;
-    Mythread(int threadId, AbstractReaderWriter* protcole);
+    Mythread(int threadId, AbstractReaderWriter* protocole);
 };
 
 
