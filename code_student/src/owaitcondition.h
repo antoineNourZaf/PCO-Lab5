@@ -1,20 +1,28 @@
-#ifndef PWAITCONDITION_H
-#define PWAITCONDITION_H
+#ifndef OWAITCONDITION_H
+#define OWAITCONDITION_H
 
+#include <QWaitCondition>
+#include "waitinglogger.h"
 #include "omutex.h"
 
+
+// pour Mesa
 class OWaitCondition
 {
+private:
+    QWaitCondition qCond;
+    QString name = "OWaitCondition";
+    WaitingLogger* logger;
 public:
 
-    OWaitCondition();
+    OWaitCondition(WaitingLogger* waitingLogger);
 
-    bool wait(OMutex *lockedMutex);
+    bool wait(OMutex *lockedMutex, const QString& threadName);
 
     void wakeAll();
 
-    void wakeOne();
+    void wakeOne(const QString& threadName);
 
 };
 
-#endif // PWAITCONDITION_H
+#endif // OWAITCONDITION_H

@@ -14,11 +14,11 @@ AbstractReaderWriter::~AbstractReaderWriter() {
 }
 
 
-/******************** IMPLEMENTATIONS SEMAPHORES **************************
 /*********************************************************
  * Priorité égale
  *********************************************************/
 
+// sem equal prio
 ReaderWriterSemaphoreEqualPrio::ReaderWriterSemaphoreEqualPrio(SynchroController* synchroController): AbstractReaderWriter(synchroController),
     mutex(new OSemaphore(1)), fifo(new OSemaphore(1)), writer(new OSemaphore(1)), nbReader(0){
 
@@ -62,10 +62,14 @@ void ReaderWriterSemaphoreEqualPrio::unlockWriting(const QString& threadName) {
     fifo->release();
 }
 
-/*******************************************************
- * EM Writers Prio
- *******************************************************/
 
+
+
+
+/*******************************************************
+ * Writers Prio
+ *******************************************************/
+// semaphore writers prio
 ReaderWriterSemaphoreWritersPrio::ReaderWriterSemaphoreWritersPrio(SynchroController* synchroController): AbstractReaderWriter(synchroController),
     mutexReaders(new OSemaphore(1)), mutexWriters(new OSemaphore(1)), writer(new OSemaphore(1)), reader(new OSemaphore(1)), mutex(new OSemaphore(1)), nbReaders(0), nbWriters(0)
 {
@@ -124,7 +128,7 @@ void ReaderWriterSemaphoreWritersPrio::unlockWriting(const QString& threadName) 
 
 
 
-
+// hoare writers prio
 ReaderWriterHoareWritersPrio::ReaderWriterHoareWritersPrio(SynchroController* synchroController) : AbstractReaderWriter(synchroController),
 nbReaders(0), writingInProgress(false), nbWritersWaiting(0)
 {
@@ -177,3 +181,68 @@ void ReaderWriterHoareWritersPrio::unlockWriting(const QString& name) {
     monitorOut();
 }
 
+
+
+
+
+// MESA writersPrio
+ReaderWriterMesaWritersPrio::ReaderWriterMesaWritersPrio(SynchroController* synchroController) : AbstractReaderWriter(synchroController),
+nbReaders(0), nbWaitingReaders(0), nbWaitingWriters(0), writingInProgress(false)
+{
+
+}
+
+ReaderWriterMesaWritersPrio::~ReaderWriterMesaWritersPrio() {
+
+}
+
+void ReaderWriterMesaWritersPrio::lockReading(const QString& name) {
+    mutex->lock(name);
+    if ((nbWaitingReaders > 0) || (writingInProgress)) {
+        nbWaitingReaders++;
+        waitReading->wait(&mutex);
+    }
+    else {
+        nbReaders++;
+    }
+    mutex->unlock();
+}
+
+void ReaderWriterMesaWritersPrio::lockWriting(const QString& name) {
+    mutex->lock(name);
+    if ((nbReaders >0) || (writingInProgress)) {
+        nbWaitingWriters++;
+        waitWriting->wait(&mutex);
+    }
+    else {
+        writingInProgress = true;
+    }
+    mutex->unlock();
+}
+
+void ReaderWriterMesaWritersPrio::unlockReading(const QString& name) {
+    mutex->lock(name);
+    nbReaders--;
+    if (nbReaders == 0) {
+        waitWriting->wakeOne();
+    }
+    mutex->unlock();
+}
+
+void ReaderWriterMesaWritersPrio::unlockWriting(const QString& name) {
+    mutex->lock(name);
+    writingInProgress = false;
+    if (nbWaitingWriters > 0) { // réveiller les autres rédacteurs, un par un, sans perdre le mutex
+        nbWaitingWriters --;
+        writingInProgress = true;
+        waitWriting->wakeOne();
+    }
+    else {
+        for (int i = 0; i <nbWaitingReaders; ++i) { // réveiller les lecteurs
+            waitReading->wakeOne();
+        }
+        nbReaders = nbWaitingReaders;
+        nbWaitingReaders = 0;
+    }
+    mutex->unlock();
+}
