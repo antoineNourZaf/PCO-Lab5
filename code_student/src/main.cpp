@@ -61,12 +61,11 @@ int main(int argc, char *argv[])
 
         if(cin.get() == '\n'){
             SynchroController::getInstance()->resume();
-<<<<<<< HEAD
+
         } else if (key == 'q' || key == 'Q') { // If key was Q (for escape)
-=======
-        } else {
+
             // If key was <esc>
->>>>>>> threadReadWrite
+
             continuing = false;
         }
     }
