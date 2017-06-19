@@ -40,9 +40,16 @@ public:
     virtual void unlockWriting(const QString& name);
 };
 
+class ReaderWriterHoare;
+
+
 // **************************************************
 // *             Redacteurs prioritaire
 // **************************************************
+
+/**
+ * @brief The ReaderWriterSemaphoreWritersPrio class
+ */
 class ReaderWriterSemaphoreWritersPrio : public AbstractReaderWriter {
 protected:
 
@@ -67,7 +74,7 @@ public:
 /**
  * @brief The ReaderWriterHoarWritersPrio class
  */
-class ReaderWriterHoarWritersPrio : public AbstractReaderWriter, public OHoareMonitor {
+class ReaderWriterHoareWritersPrio : public AbstractReaderWriter, public OHoareMonitor {
 protected:
     Condition waitWriting;
     Condition waitReading;
@@ -76,8 +83,8 @@ protected:
     int nbWritersWaiting;
 
 public:
-    ReaderWriterHoarWritersPrio(SynchroController* synchroController);
-    ~ReaderWriterHoarWritersPrio();
+    ReaderWriterHoareWritersPrio(SynchroController* synchroController);
+    ~ReaderWriterHoareWritersPrio();
 
     virtual void lockReading(const QString& name);
     virtual void lockWriting(const QString& name);

@@ -125,17 +125,17 @@ void ReaderWriterSemaphoreWritersPrio::unlockWriting(const QString& threadName) 
 
 
 
-ReaderWriterHoarWritersPrio::ReaderWriterHoarWritersPrio(SynchroController* synchroController) : AbstractReaderWriter(synchroController),
+ReaderWriterHoareWritersPrio::ReaderWriterHoareWritersPrio(SynchroController* synchroController) : AbstractReaderWriter(synchroController),
 nbReaders(0), writingInProgress(false), nbWritersWaiting(0)
 {
 
 }
 
-ReaderWriterHoarWritersPrio::~ReaderWriterHoarWritersPrio() {
+ReaderWriterHoareWritersPrio::~ReaderWriterHoareWritersPrio() {
 
 }
 
-void ReaderWriterHoarWritersPrio::lockReading(const QString& name) {
+void ReaderWriterHoareWritersPrio::lockReading(const QString& name) {
     monitorIn(name);
     if ((writingInProgress) || (nbWritersWaiting > 0)) { // les lecteurs n'ont pas la priorité sur les rédacteurs, donc on vérifie qu'aucun rédacteur n'attend
         wait(waitReading, name);
@@ -145,7 +145,7 @@ void ReaderWriterHoarWritersPrio::lockReading(const QString& name) {
     monitorOut();
 }
 
-void ReaderWriterHoarWritersPrio::lockWriting(const QString& name) {
+void ReaderWriterHoareWritersPrio::lockWriting(const QString& name) {
     monitorIn(name);
     if ((nbReaders > 0) || (writingInProgress)) {
         nbWritersWaiting++; // le rédacteur attent la libération d'un rédacteur ou d'un lecteur
@@ -156,7 +156,7 @@ void ReaderWriterHoarWritersPrio::lockWriting(const QString& name) {
     monitorOut();
 }
 
-void ReaderWriterHoarWritersPrio::unlockReading(const QString& name) {
+void ReaderWriterHoareWritersPrio::unlockReading(const QString& name) {
     monitorIn(name);
     nbReaders--;
     if (nbReaders == 0) { // le dernier lecteur
@@ -165,7 +165,7 @@ void ReaderWriterHoarWritersPrio::unlockReading(const QString& name) {
     monitorOut();
 }
 
-void ReaderWriterHoarWritersPrio::unlockWriting(const QString& name) {
+void ReaderWriterHoareWritersPrio::unlockWriting(const QString& name) {
     monitorIn(name);
     writingInProgress = false;
     if (nbWritersWaiting >0) { // si d'autres rédacteurs attendent,
