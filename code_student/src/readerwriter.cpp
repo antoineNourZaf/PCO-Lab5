@@ -25,7 +25,7 @@ ReaderWriterSemaphoreEqualPrio::~ReaderWriterSemaphoreEqualPrio() {
 
 }
 
-void ReaderWriterSemaphoreEqualPrio::lockReading(const QString threadName) {
+void ReaderWriterSemaphoreEqualPrio::lockReading(const QString& threadName) {
     // le premier lecteur va vérouiller
     fifo->acquire(threadName);
     mutex->acquire(threadName);
@@ -38,7 +38,7 @@ void ReaderWriterSemaphoreEqualPrio::lockReading(const QString threadName) {
     fifo->release(); // le suivant dans la fifo pourra tenter sa chance
 }
 
-void ReaderWriterSemaphoreEqualPrio::unlockReading(const QString threadName) {
+void ReaderWriterSemaphoreEqualPrio::unlockReading(const QString& threadName) {
     mutex->acquire(threadName);
     nbReader--;
     if (nbReader == 0) {
@@ -47,12 +47,12 @@ void ReaderWriterSemaphoreEqualPrio::unlockReading(const QString threadName) {
     mutex->release();
 }
 
-void ReaderWriterSemaphoreEqualPrio::lockWriting(const QString threadName) {
+void ReaderWriterSemaphoreEqualPrio::lockWriting(const QString& threadName) {
     fifo->acquire(threadName); // le redacteur va bloquer tout ceux qui attendent dans la file
     writer->acquire(threadName);
 }
 
-void ReaderWriterSemaphoreEqualPrio::unlockWriting(const QString threadName) {
+void ReaderWriterSemaphoreEqualPrio::unlockWriting(const QString& threadName) {
     writer->release();
     fifo->release();
 }

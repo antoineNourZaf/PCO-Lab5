@@ -6,9 +6,9 @@ OMutex::OMutex(WaitingLogger* waitingLogger):name("Mutex")
 }
 
 void OMutex::lock(const QString& threadName){
-    logger->addWaiting(threadName,name);
+    //logger->addWaiting("sd","sd"); //threadName,this->name
     mutex.lock();
-    logger->removeWaiting(threadName,name);
+    //logger->removeWaiting(threadName,name);
 }
 
 bool OMutex::tryLock(){
