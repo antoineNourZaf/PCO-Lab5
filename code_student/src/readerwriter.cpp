@@ -187,13 +187,16 @@ void ReaderWriterHoareWritersPrio::unlockWriting(const QString& name) {
 
 // MESA writersPrio
 ReaderWriterMesaWritersPrio::ReaderWriterMesaWritersPrio(SynchroController* synchroController) : AbstractReaderWriter(synchroController),
-nbReaders(0), nbWaitingReaders(0), nbWaitingWriters(0), writingInProgress(false)
+mutex(new OMutex(WaitingLogger::getInstance())), waitReading(new OWaitCondition(WaitingLogger::getInstance())), waitWriting(new OWaitCondition(WaitingLogger::getInstance())),
+  nbReaders(0), nbWaitingReaders(0), nbWaitingWriters(0), writingInProgress(false)
 {
 
 }
 
 ReaderWriterMesaWritersPrio::~ReaderWriterMesaWritersPrio() {
-
+    delete waitWriting;
+    delete waitReading;
+    delete mutex;
 }
 
 void ReaderWriterMesaWritersPrio::lockReading(const QString& name) {
