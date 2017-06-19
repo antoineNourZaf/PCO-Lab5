@@ -10,10 +10,10 @@ protected:
 public:
     AbstractReaderWriter(SynchroController* synchroController);
     virtual ~AbstractReaderWriter();
-    virtual void lockReading(const QString name)   = 0;
-    virtual void lockWriting(const QString name)   = 0;
-    virtual void unlockReading(const QString name) = 0;
-    virtual void unlockWriting(const QString name) = 0;
+    virtual void lockReading(const QString& name)   = 0;
+    virtual void lockWriting(const QString& name)   = 0;
+    virtual void unlockReading(const QString& name) = 0;
+    virtual void unlockWriting(const QString& name) = 0;
 };
 
 // ===============================================
@@ -31,10 +31,10 @@ protected:
 public:
     ReaderWriterSemaphoreEqualPrio(SynchroController* synchroController);
     virtual ~ReaderWriterSemaphoreEqualPrio();
-    virtual void lockReading(const QString name);
-    virtual void lockWriting(const QString name);
-    virtual void unlockReading(const QString name);
-    virtual void unlockWriting(const QString name);
+    virtual void lockReading(const QString& name);
+    virtual void lockWriting(const QString& name);
+    virtual void unlockReading(const QString& name);
+    virtual void unlockWriting(const QString& name);
 };
 
 class ReaderWriterSemaphoreWritersPrio : public AbstractReaderWriter {
