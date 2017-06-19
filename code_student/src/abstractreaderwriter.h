@@ -2,6 +2,7 @@
 #define ABSTRACTREADERWRITER_H
 
 #include "synchrocontroller.h"
+#include "osemaphore.h"
 
 class AbstractReaderWriter {
 protected:
