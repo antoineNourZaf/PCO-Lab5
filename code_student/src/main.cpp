@@ -15,12 +15,9 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    cout << "hello" << endl;
-
     // Create the resource manager object
     static SynchroController *syncCtrl = SynchroController::getInstance();
     AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphoreEqualPrio(syncCtrl);
-
 
     ReaderThread *readers[NB_READER];
     WriterThread *writers[NB_WRITER];
@@ -43,21 +40,14 @@ int main(int argc, char *argv[])
         writers[t]->start();
     }
 
-
-
     bool continuing = true;
-    char key;
-    cin >> key;
+
     while (continuing) {
         cout << "Press <Enter> to continue monitor or <esc> to exit" << endl;
 
-        // Wait for a key press
-        cin >> key;
-
         if(cin.get() == '\n'){
             SynchroController::getInstance()->resume();
-        } else {
-            // If key was <esc>
+        } else { // If key was <esc>
             continuing = false;
         }
     }
