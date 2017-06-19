@@ -19,29 +19,14 @@ public:
 // ===============================================
 
 
-
-class ReaderWriterMutex : public AbstractReaderWriter {
-public:
-    virtual ~ReaderWriterMutex();
-    ReaderWriterMutex(SynchroController* synchroController);
-    virtual void lockReading();
-    virtual void lockWriting();
-    virtual void unlockReading();
-    virtual void unlockWriting();
-};
-
-
-// ===============================================
-
-
 class ReaderWriterSemaphore : public AbstractReaderWriter {
 protected:
-    OSemaphore mutex; // accès à la nbReaders
+    OSemaphore* mutex; // accès à la nbReaders
     int nbReader;
 
-    OSemaphore fifo; // file d'attente pour tout le monde
+    OSemaphore* fifo; // file d'attente pour tout le monde
 
-    OSemaphore writer; // le premier lecteur bloque les rédacteurs ET un rédacteur bloque tt le monde
+    OSemaphore* writer; // le premier lecteur bloque les rédacteurs ET un rédacteur bloque tt le monde
 
 public:
     ReaderWriterSemaphore(SynchroController* synchroController);

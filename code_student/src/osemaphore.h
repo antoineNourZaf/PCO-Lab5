@@ -3,19 +3,20 @@
 
 #include <QSemaphore>
 #include "waitinglogger.h"
-#include "mythread.h"
+//#include "mythread.h"
 
+class MyThread;
 
 class OSemaphore
 {
 private:
     const QString name;
     int nbPermission;
-    QSemaphore semaphore;
+    QSemaphore *semaphore;
     WaitingLogger *logger;
 
 public:
-    OSemaphore(WaitingLogger* waitingLogger, int n = 0);
+    OSemaphore(int n = 0);
 
     void acquire(MyThread* thread); // pour connaitre quel thread fait l'acquire
 

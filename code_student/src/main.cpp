@@ -1,9 +1,6 @@
-
 #include <QApplication>
 #include <iostream>
 
-#include "synchrocontroller.h"
-#include "abstractreaderwriter.h"
 #include "mythread.h"
 
 #define NB_READER 4
@@ -15,8 +12,8 @@ int main(int argc, char *argv[])
 {
 
     // Create the resource manager object
-    SynchroController *syncCtrl = SynchroController::getInstance();
-    AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphoreEqualPrio(syncCtrl);
+    static SynchroController *syncCtrl = SynchroController::getInstance();
+    AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphore(syncCtrl);
 
 
     ReaderThread *readers[NB_READER];
@@ -29,14 +26,12 @@ int main(int argc, char *argv[])
     // Readers
     for(int t = 0; t<NB_READER; t++){
         cout << "Creating the reader " << t << endl;
-        readers[t] = new ReaderThread(t,protocoleSema,syncCtrl);
-        readers[t]->setObjectName("Lecter " + t);
+        readers[t] = new ReaderThread(t,protocoleSema,syncCtrl,"Lecter " + t);
         readers[t]->start();
     }
     for(int t = 0; t<NB_WRITER; t++){
         cout << "Creating the writer " << t << endl;
-        writers[t] = new WriterThread(t,protocoleSema,syncCtrl);
-        writers[t]->setObjectName("Writer " + t);
+        writers[t] = new WriterThread(t,protocoleSema,syncCtrl,"Writer " + t);
         writers[t]->start();
     }
     for(int t=0; t<NB_READER; t++) {

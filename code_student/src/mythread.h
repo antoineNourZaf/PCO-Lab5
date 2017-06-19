@@ -16,20 +16,20 @@ protected:
     int tid;
 public:
 
-    MyThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync);
-    MyThread(int threadId, AbstractReaderWriter* protocole, const QString& nom);
+    MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync,const QString& nom);
+    //MyThread(int threadId, AbstractReaderWriter* protocole, const QString& nom);
 };
 
 
 class ReaderThread : public MyThread {
 public:
-    ReaderThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync);
+    ReaderThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync, const QString& nom);
     void run();
 };
 
 class WriterThread : public MyThread {
 public:
-    WriterThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync);
+    WriterThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync, const QString& nom);
     void run();
 };
 

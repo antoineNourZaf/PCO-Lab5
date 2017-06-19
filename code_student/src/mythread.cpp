@@ -3,22 +3,23 @@
 
 using namespace std;
 
-MyThread::MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync)
+MyThread::MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync,const QString& nom)
 {
     this->tid = threadId;
     this->readerWriter = protocole;
     this->syncCtr = sync;
+    QThread::setObjectName(nom);
 }
-
+/*
 MyThread::MyThread(int threadId, AbstractReaderWriter* protocole, const QString& nom) {
 
     this->tid = threadId;
     this->readerWriter = protocole;
     QThread::setObjectName(nom);
 
-}
+}*/
 
-ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync) : MyThread(threadId,protocole,sync) {
+ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync,const QString& nom) : MyThread(threadId,protocole,sync,nom) {
 
 }
 
@@ -33,7 +34,7 @@ void ReaderThread::run() {
     }
 }
 
-WriterThread::WriterThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync) : MyThread(threadId,protocole, sync) {
+WriterThread::WriterThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync, const QString& nom) : MyThread(threadId,protocole, sync,nom) {
 }
 
 void WriterThread::run() {
