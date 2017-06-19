@@ -19,7 +19,7 @@ public:
 // ===============================================
 
 
-class ReaderWriterSemaphore : public AbstractReaderWriter {
+class ReaderWriterSemaphoreEqualPrio : public AbstractReaderWriter {
 protected:
     OSemaphore* mutex; // accès à la nbReaders
     int nbReader;
@@ -29,8 +29,8 @@ protected:
     OSemaphore* writer; // le premier lecteur bloque les rédacteurs ET un rédacteur bloque tt le monde
 
 public:
-    ReaderWriterSemaphore(SynchroController* synchroController);
-    virtual ~ReaderWriterSemaphore();
+    ReaderWriterSemaphoreEqualPrio(SynchroController* synchroController);
+    virtual ~ReaderWriterSemaphoreEqualPrio();
     virtual void lockReading();
     virtual void lockWriting();
     virtual void unlockReading();
