@@ -8,7 +8,7 @@
 class OMutex
 {
 private:
-   const QString& name;
+   const QString name = "Mutex";
    QMutex mutex;
    WaitingLogger *logger;
 

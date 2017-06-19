@@ -1,18 +1,20 @@
 #include "omutex.h"
+#include "waitinglogger.h"
 
-OMutex::OMutex(WaitingLogger* waitingLogger):name("Mutex")
+OMutex::OMutex(WaitingLogger* waitingLogger)
 {
     logger = waitingLogger;
 }
 
 void OMutex::lock(const QString& threadName){
-    //logger->addWaiting("sd","sd"); //threadName,this->name
+    logger->addWaiting(threadName,name); //threadName,this->name
     mutex.lock();
-    //logger->removeWaiting(threadName,name);
+    logger->removeWaiting(threadName,name);
 }
 
 bool OMutex::tryLock(){
-    //TODI
+    //TODO
+    return true;
 }
 
 void OMutex::unlock(){
