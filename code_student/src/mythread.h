@@ -18,7 +18,7 @@ protected:
 public:
 
     MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync,const QString& nom);
-    //MyThread(int threadId, AbstractReaderWriter* protocole, const QString& nom);
+
 };
 
 

@@ -15,10 +15,13 @@
 #define NB_READER 4
 #define NB_WRITER 4
 
+
+
 using namespace std;
 
 int main(int argc, char *argv[])
 {
+    cout << "hello" << endl;
 
     // Create the resource manager object
     static SynchroController *syncCtrl = SynchroController::getInstance();
@@ -45,29 +48,35 @@ int main(int argc, char *argv[])
         writers[t]->start();
     }
 
+
+
+    bool continuing = true;
+    char key;
+    cin >> key;
+    while (continuing) {
+        cout << "Press <Enter> to continue monitor or <esc> to exit" << endl;
+
+        // Wait for a key press
+        cin >> key;
+
+        if(cin.get() == '\n'){
+            SynchroController::getInstance()->resume();
+<<<<<<< HEAD
+        } else if (key == 'q' || key == 'Q') { // If key was Q (for escape)
+=======
+        } else {
+            // If key was <esc>
+>>>>>>> threadReadWrite
+            continuing = false;
+        }
+    }
+
     for (int t = 0; t < NB_READER; t++) {
         readers[t]->wait();
     }
 
     for(int t = 0; t < NB_WRITER; t++) {
         writers[t]->wait();
-    }
-
-    bool continuing = true;
-
-    while (continuing) {
-
-        char key;
-
-        // Wait for a key press
-        cin >> key;
-
-        if (key == 32) {
-            // If key is <enter>
-            SynchroController::getInstance()->resume();
-        } else if (key == 'q' || key == 'Q') { // If key was Q (for escape)
-            continuing = false;
-        }
     }
 
     // Kill the threads

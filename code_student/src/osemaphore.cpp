@@ -10,6 +10,7 @@ OSemaphore::OSemaphore(int n):name("Semaphore"),semaphore(new QSemaphore())
 
 
 void OSemaphore::acquire(const QString& threadName){
+
     logger->addWaiting(threadName,name);
     semaphore->acquire();
     logger->removeWaiting(threadName,name);

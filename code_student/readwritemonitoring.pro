@@ -8,6 +8,8 @@ TEMPLATE = app
 
 INCLUDEPATH += src
 
+CONFIG += console
+
 
 SOURCES += src/main.cpp\
     src/waitinglogger.cpp \

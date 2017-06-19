@@ -19,7 +19,9 @@ public:
 
     OSemaphore(int n = 0);
 
+
     void acquire(const QString & threadName); // pour connaitre quel thread fait l'acquire
+
 
     void release();
 
