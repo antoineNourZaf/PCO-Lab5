@@ -41,6 +41,13 @@ void ReadWriteLogger::removeResourceAccess(const QString &threadName)
 
 }
 
+void WaitingLogger::addWaiting(const QString &threadName, const QString &objectName){
+
+}
+
+void WaitingLogger::removeWaiting(const QString &threadName, const QString &objectName){
+
+}
 
 void ReadWriteLogger::updateView()
 {
