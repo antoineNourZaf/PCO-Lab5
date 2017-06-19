@@ -89,15 +89,32 @@ void ReaderWriterSemaphoreWritersPrio::lockReading(const QString& threadName) {
 }
 
 void ReaderWriterSemaphoreWritersPrio::lockWriting(const QString& threadName) {
-
+    mutexWriters->acquire(threadName);
+    nbWriters++;
+    if (nbWriters == 1) {
+        reader->acquire(threadName);
+    }
+    mutexWriters->release();
+    writer->acquire(threadName); // si un rédacteur arrive alors que le premier lecteur est en train d'accéder
 }
 
 void ReaderWriterSemaphoreWritersPrio::unlockReading(const QString& threadName) {
-
+    mutex->acquire(threadName);
+    nbReaders--;
+    if (nbReaders == 0) { // le dernier lecteur
+        writer->release(); // permet aux rédacteurs de passer
+    }
+    mutex->release();
 }
 
 void ReaderWriterSemaphoreWritersPrio::unlockWriting(const QString& threadName) {
-
+    writer->release();
+    mutexWriters->acquire(threadName);
+    nbWriters--;
+    if (nbWriters == 0) { // le dernier rédacteur
+        reader->release(); // va libérer les lecteurs
+    }
+    mutexWriters->release();
 }
 
 
