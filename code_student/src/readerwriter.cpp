@@ -4,8 +4,8 @@
 #include "abstractreaderwriter.h"
 
 // ABSTRACT
-AbstractReaderWriter::AbstractReaderWriter() {
-
+AbstractReaderWriter::AbstractReaderWriter(SynchroController* synchroController) {
+    this->synCtr = synchroController;
 }
 
 AbstractReaderWriter::~AbstractReaderWriter() {
@@ -18,7 +18,7 @@ ReaderWriterMutex::~ReaderWriterMutex() {
 
 }
 
-ReaderWriterMutex::ReaderWriterMutex() {
+ReaderWriterMutex::ReaderWriterMutex(SynchroController* synchroController) {
 
 }
 void ReaderWriterMutex::lockReading() {
@@ -36,7 +36,7 @@ void ReaderWriterMutex::unlockWriting() {
 
 
 // SEMAPHORE
-ReaderWriterSemaphore::ReaderWriterSemaphore() :
+ReaderWriterSemaphore::ReaderWriterSemaphore(SynchroController* synchroController) :
     mutex(1), fifo(1), writer(1), nbReader(0) {
 
 }
@@ -49,6 +49,7 @@ void ReaderWriterSemaphore::lockReading() {
     // le premier lecteur va vérouiller
     fifo.acquire();
     mutex.acquire();
+
     nbReader++;
     if (nbReader == 1) {
         writer.acquire(); // bloquer les rédacteurs

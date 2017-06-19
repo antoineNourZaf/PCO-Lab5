@@ -3,10 +3,13 @@
 
 #include "osemaphore.h"
 #include "omutex.h"
+#include "synchrocontroller.h"
 
 class AbstractReaderWriter {
+protected:
+    SynchroController* synCtr;
 public:
-    AbstractReaderWriter();
+    AbstractReaderWriter(SynchroController* synchroController);
     virtual ~AbstractReaderWriter();
     virtual void lockReading()   = 0;
     virtual void lockWriting()   = 0;
@@ -21,7 +24,7 @@ public:
 class ReaderWriterMutex : public AbstractReaderWriter {
 public:
     virtual ~ReaderWriterMutex();
-    ReaderWriterMutex();
+    ReaderWriterMutex(SynchroController* synchroController);
     virtual void lockReading();
     virtual void lockWriting();
     virtual void unlockReading();
@@ -42,7 +45,7 @@ protected:
     OSemaphore writer; // le premier lecteur bloque les rédacteurs ET un rédacteur bloque tt le monde
 
 public:
-    ReaderWriterSemaphore();
+    ReaderWriterSemaphore(SynchroController* synchroController);
     virtual ~ReaderWriterSemaphore();
     virtual void lockReading();
     virtual void lockWriting();

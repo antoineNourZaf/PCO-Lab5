@@ -2,25 +2,27 @@
 #define PSEMAPHORE_H
 
 #include "qmutex.h"
-#include "qsemaphore.h"
+#include <QSemaphore>
 #include "qwaitcondition.h"
+#include "waitinglogger.h"
+
 
 
 class OSemaphore
 {
+private:
+    int nbPermission;
+    QSemaphore semaphore;
+    WaitingLogger *logger;
+
 public:
-    OSemaphore(int n = 0);
+    OSemaphore(int n, WaitingLogger* waitingLogger);
 
     void acquire();
 
     void release();
 
     bool tryAcquire();
-
-private:
-    QWaitCondition* condition;
-    QMutex* mutex;
-    int nbPermission;
 };
 
 #endif // PSEMAPHORE_H
