@@ -10,14 +10,15 @@ bool OWaitCondition::wait(OMutex *lockedMutex) {
     if (lockedMutex == nullptr)
         return false;
 
+    lockedMutex->unlock();
 
 }
 
-OWaitCondition::wakeOne() {
-    //To Do
+void OWaitCondition::wakeOne() {
+
 }
 
-OWaitCondition::wakeAll() {
+void OWaitCondition::wakeAll() {
     //TODO
 }
 
