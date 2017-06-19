@@ -10,14 +10,6 @@ MyThread::MyThread(int threadId, AbstractReaderWriter *protocole,SynchroControll
     this->syncCtr = sync;
     QThread::setObjectName(nom);
 }
-/*
-MyThread::MyThread(int threadId, AbstractReaderWriter* protocole, const QString& nom) {
-
-    this->tid = threadId;
-    this->readerWriter = protocole;
-    QThread::setObjectName(nom);
-
-}*/
 
 ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync,const QString& nom) : MyThread(threadId,protocole,sync,nom) {
 
