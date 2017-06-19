@@ -7,7 +7,7 @@
  *
  * Voici notre implementation du laboratoire :
  */
- #include <QApplication>
+#include <QApplication>
 #include <iostream>
 
 #include "mythread.h"
