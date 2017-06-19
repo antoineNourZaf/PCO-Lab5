@@ -19,7 +19,8 @@ SOURCES += src/main.cpp\
     src/owaitcondition.cpp \
     src/ohoaremonitor.cpp \
     src/mythread.cpp \
-    src/readerwriter.cpp
+    src/readerwriter.cpp \
+    src/omesamonitor.cpp
 
 HEADERS  +=  \
     src/waitinglogger.h \
@@ -29,4 +30,5 @@ HEADERS  +=  \
     src/owaitcondition.h \
     src/ohoaremonitor.h \
     src/abstractreaderwriter.h \
-    src/mythread.h
+    src/mythread.h \
+    src/omesamonitor.h
