@@ -1,19 +1,18 @@
 #include "omutex.h"
 
-// TODO
-OMutex::OMutex(WaitingLogger* waitingLogger)
+OMutex::OMutex(WaitingLogger* waitingLogger):name("Mutex")
 {
     logger = waitingLogger;
 }
 
-void OMutex::lock(){
-    logger->addWaiting();
+void OMutex::lock(MyThread* thread){
+    logger->addWaiting(thread->objectName(),name);
     mutex.lock();
-    logger->removeWaiting();
+    logger->removeWaiting(thread->objectName(),name);
 }
 
 bool OMutex::tryLock(){
-
+    //TODI
 }
 
 void OMutex::unlock(){

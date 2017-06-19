@@ -1,7 +1,6 @@
 #include "osemaphore.h"
 
-// TODO
-OSemaphore::OSemaphore(int n = 0, WaitingLogger* waitingLogger)
+OSemaphore::OSemaphore(WaitingLogger* waitingLogger,int n):name("Semaphore")
 {
     nbPermission = n;
     logger = waitingLogger;
@@ -9,10 +8,10 @@ OSemaphore::OSemaphore(int n = 0, WaitingLogger* waitingLogger)
 }
 
 
-void OSemaphore::acquire(){
-    logger->addWaiting();
+void OSemaphore::acquire(MyThread* thread){
+    logger->addWaiting(thread->objectName(),name);
     semaphore.acquire();
-    logger->removeWaiting();
+    logger->removeWaiting(thread->objectName(),name);
 }
 
 void OSemaphore::release(){
