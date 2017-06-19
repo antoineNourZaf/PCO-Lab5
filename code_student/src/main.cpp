@@ -5,11 +5,17 @@
 
 #define NB_READER 4
 #define NB_WRITER 4
+#ifdef QT_NO_DEBUG_OUTPUT
+#undef QT_NO_DEBUG_OUTPUT
+
+#endif
+
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
+    cout << "hello" << endl;
 
     // Create the resource manager object
     static SynchroController *syncCtrl = SynchroController::getInstance();
