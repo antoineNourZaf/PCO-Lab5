@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     // Create the resource manager object
     static SynchroController *syncCtrl = SynchroController::getInstance();
-    AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphore(syncCtrl);
+    AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphoreEqualPrio(syncCtrl);
 
 
     ReaderThread *readers[NB_READER];
