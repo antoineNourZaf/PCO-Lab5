@@ -1,21 +1,34 @@
 #ifndef OHOAREMONITOR_H
 #define OHOAREMONITOR_H
 
+#include "osemaphore.h"
 
 class OHoareMonitor
 {
+private:
+    OSemaphore* monitorMutex;
+    OSemaphore* monitorSignal;
+    int monitorNbSignal;
 protected:
 
-    class Condition;
+    class Condition {
+        friend OHoareMonitor;
+    public:
+        Condition();
+    private:
+        OSemaphore*  waitingSem;
+        int nbWaiting;
+    };
 
 public:
     OHoareMonitor();
+    ~OHoareMonitor();
 
     /**
      * This function has to be called at the beginning of each function being
      * an entry point to the monitor.
      */
-    void monitorIn();
+    void monitorIn(const QString& threadName);
 
     /**
      * This function has to be called at the end of each function being
@@ -28,7 +41,7 @@ public:
      * When the thread is waken by a signal, it continues with the mutual
      * exclusion.
      */
-    void wait(Condition &cond);
+    void wait(Condition &cond, const QString& threadName);
 
     /**
      * This function implements the signaling of a condition, as defined by
@@ -36,7 +49,7 @@ public:
      * but if there is one the thread calling signal is suspended, waiting for
      * the other one to finish.
      */
-    void signal(Condition &cond);
+    void signal(Condition &cond, const QString& threadName);
 
 };
 
