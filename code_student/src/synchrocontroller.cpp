@@ -2,7 +2,7 @@
 
 SynchroController::SynchroController()
 {
-
+    semaphore = new QSemaphore();
 }
 
 
@@ -14,10 +14,10 @@ SynchroController *SynchroController::getInstance()
 
 void SynchroController::pause()
 {
-
+    semaphore->acquire();
 }
 
 void SynchroController::resume()
 {
-
+    semaphore->release();
 }
