@@ -1,8 +1,6 @@
 #ifndef ABSTRACTREADERWRITER_H
 #define ABSTRACTREADERWRITER_H
 
-#include "osemaphore.h"
-#include "omutex.h"
 #include "synchrocontroller.h"
 
 class AbstractReaderWriter {

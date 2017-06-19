@@ -1,5 +1,6 @@
 #include "mythread.h"
 #include <iostream>
+
 using namespace std;
 
 MyThread::MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync)
