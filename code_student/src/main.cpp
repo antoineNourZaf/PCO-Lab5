@@ -49,12 +49,11 @@ int main(int argc, char *argv[])
     bool continuing = true;
 
     while (continuing) {
-        cout << "Press <Enter> to continue monitor or <esc> to exit" << endl;
+        cout << "Press <Enter> to continue monitor or <q> to exit" << endl;
 
         if(cin.get() == '\n'){
             SynchroController::getInstance()->resume();
-
-        } else { // If key was <esc>
+        } else if (cin.get() == 'q' || cin.get() == 'Q' || cin.get() == 27) { // If key was <esc>
             continuing = false;
         }
     }

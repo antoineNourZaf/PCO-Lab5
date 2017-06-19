@@ -6,6 +6,7 @@
 class OWaitCondition
 {
 public:
+
     OWaitCondition();
 
     bool wait(OMutex *lockedMutex);
