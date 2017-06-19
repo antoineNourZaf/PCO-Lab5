@@ -1,13 +1,23 @@
 #ifndef PSEMAPHORE_H
 #define PSEMAPHORE_H
 
+#include <QSemaphore>
+#include "waitinglogger.h"
+#include "mythread.h"
+
 
 class OSemaphore
 {
-public:
-    OSemaphore(int n = 0);
+private:
+    const QString name;
+    int nbPermission;
+    QSemaphore semaphore;
+    WaitingLogger *logger;
 
-    void acquire();
+public:
+    OSemaphore(WaitingLogger* waitingLogger, int n = 0);
+
+    void acquire(MyThread* thread); // pour connaitre quel thread fait l'acquire
 
     void release();
 

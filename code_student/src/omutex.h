@@ -1,13 +1,21 @@
 #ifndef PMUTEX_H
 #define PMUTEX_H
 
+#include <QMutex>
+#include "waitinglogger.h"
+#include "mythread.h"
 
 class OMutex
 {
-public:
-    OMutex();
+private:
+   const QString name;
+   QMutex mutex;
+   WaitingLogger *logger;
 
-    void lock();
+public:
+    OMutex(WaitingLogger* waitingLogger);
+
+    void lock(MyThread* thread);
 
     bool tryLock();
 
