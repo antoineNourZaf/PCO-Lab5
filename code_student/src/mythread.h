@@ -5,6 +5,9 @@
 #include "abstractreaderwriter.h"
 #include "synchrocontroller.h"
 
+// forward declaration
+class AbstractReaderWriter;
+
 
 class MyThread : public QThread {
 protected:

@@ -5,6 +5,7 @@
 #include "waitinglogger.h"
 #include "mythread.h"
 
+
 class OSemaphore
 {
 private:
@@ -16,7 +17,7 @@ private:
 public:
     OSemaphore(WaitingLogger* waitingLogger, int n = 0);
 
-    void acquire(MyThread* thread);
+    void acquire(MyThread* thread); // pour connaitre quel thread fait l'acquire
 
     void release();
 
