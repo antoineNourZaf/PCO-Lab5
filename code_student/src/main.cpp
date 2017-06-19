@@ -12,10 +12,8 @@
 
 #include "mythread.h"
 
-#define NB_READER 4
-#define NB_WRITER 4
-
-
+#define NB_READER 3
+#define NB_WRITER 0
 
 using namespace std;
 
@@ -33,16 +31,16 @@ int main(int argc, char *argv[])
     //Readers
     for (int t = 0; t < NB_READER; t++) {
 
-        cout << "Creating the reader " << t << endl;
-        readers[t] = new ReaderThread(t,protocoleSema,syncCtrl,"Lecter " + t);
+        cout << "Creating/Starting the reader " << t << endl;
+        readers[t] = new ReaderThread(t,protocoleSema,syncCtrl, "Reader" + QString::number(t));
         readers[t]->start();
     }
 
     //Writers
     for (int t = 0; t < NB_WRITER; t++) {
 
-        cout << "Creating the writer " << t << endl;
-        writers[t] = new WriterThread(t,protocoleSema,syncCtrl,"Writer " + t);
+        cout << "Creating/Starting the writer " << t << endl;
+        writers[t] = new WriterThread(t,protocoleSema,syncCtrl,"Writer" + QString::number(t));
         writers[t]->start();
     }
 
@@ -58,6 +56,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    /* Attente de la fin de l'exécution des différents threads */
     for (int t = 0; t < NB_READER; t++) {
         readers[t]->wait();
     }

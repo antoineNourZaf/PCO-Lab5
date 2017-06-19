@@ -1,4 +1,7 @@
 #include "waitinglogger.h"
+#include <iostream>
+
+using namespace std;
 
 WaitingLogger::WaitingLogger()
 {
@@ -43,32 +46,47 @@ WaitingQueue::WaitingQueue(QString objectName, QStringList threadNames){
 }
 
 void WaitingLogger::addWaiting(const QString &threadName, const QString &objectName){
+    std::cout << "ADDWAITING" << std::endl;
+    bool find = false;
     for(WaitingQueue* queue : queues){
-        if(queue->name == objectName){
-            if(!queue->threadNames.contains(threadName))
-                queue->threadNames.append(threadName);
+        if(queue->name == objectName && !queue->threadNames.contains(threadName)){
+            queue->threadNames.append(threadName);
+            find = true;
         }
     }
-    queues.append(new WaitingQueue(objectName, QStringList()<<threadName));
+    if(!find){
+        queues.append(new WaitingQueue(objectName, QStringList()<<threadName));
+    }
 
-    //updateView();
+    updateView();
 }
 
 void WaitingLogger::removeWaiting(const QString &threadName, const QString &objectName){
+    std::cout << "RMWAITING" << std::endl;
+    WaitingQueue* queueToRm = NULL;
     for(WaitingQueue* queue : queues){
         if(queue->name == objectName){
             if(queue->threadNames.contains(threadName)){
                 queue->threadNames.removeOne(threadName);
                 if(queue->threadNames.size()==0){
-                  //supprimer queue
+                  queueToRm=queue;
                 }
             }
         }
     }
 
+    if(queueToRm != NULL){
+        queues.removeOne(queueToRm);
+    }
 }
 
 void ReadWriteLogger::updateView()
 {
-
+     for(WaitingQueue* queue : getQueues()){
+         cout << queue->name.toStdString() << " : ";
+         for(QString thread :queue->threadNames){
+             std::cout<<thread.toStdString()<<" ";
+         }
+         std::cout<<endl;
+     }
 }

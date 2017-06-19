@@ -14,6 +14,7 @@ private:
     int nbPermission;
     QSemaphore *semaphore;
     WaitingLogger *logger;
+    static int compteur;
 
 public:
 

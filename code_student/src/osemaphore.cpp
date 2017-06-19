@@ -1,16 +1,20 @@
 #include "osemaphore.h"
 #include "mythread.h"
+#include <iostream>
 
-OSemaphore::OSemaphore(int n):name("Semaphore"),semaphore(new QSemaphore())
+int OSemaphore::compteur=0;
+
+OSemaphore::OSemaphore(int n):name("Semaphore" + QString::number(compteur)),semaphore(new QSemaphore())
 {
     nbPermission = n;
     logger = WaitingLogger::getInstance();
-    //semaphore = new QSemaphore(nbPermission);
+    compteur++;
 }
 
 
 void OSemaphore::acquire(const QString& threadName){
 
+    std::cout << name.toStdString() << " by : "<< threadName.toStdString() << std::endl;
     logger->addWaiting(threadName,name);
     semaphore->acquire();
     logger->removeWaiting(threadName,name);
