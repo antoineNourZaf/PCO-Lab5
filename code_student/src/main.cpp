@@ -43,13 +43,7 @@ int main(int argc, char *argv[])
         writers[t]->start();
     }
 
-    for (int t = 0; t < NB_READER; t++) {
-        readers[t]->wait();
-    }
 
-    for(int t = 0; t < NB_WRITER; t++) {
-        writers[t]->wait();
-    }
 
     bool continuing = true;
     char key;
@@ -67,6 +61,15 @@ int main(int argc, char *argv[])
             continuing = false;
         }
     }
+
+    for (int t = 0; t < NB_READER; t++) {
+        readers[t]->wait();
+    }
+
+    for(int t = 0; t < NB_WRITER; t++) {
+        writers[t]->wait();
+    }
+
     // Kill the threads
 
     return 0;
