@@ -14,8 +14,8 @@ AbstractReaderWriter::~AbstractReaderWriter() {
 }
 
 
-
-// SEMAPHORE
+// SEMAPHORES
+// SEM Equal Prio
 ReaderWriterSemaphoreEqualPrio::ReaderWriterSemaphoreEqualPrio(SynchroController* synchroController): AbstractReaderWriter(synchroController),
     mutex(new OSemaphore(1)), fifo(new OSemaphore(1)), writer(new OSemaphore(1)), nbReader(0){
 
@@ -58,3 +58,30 @@ void ReaderWriterSemaphoreEqualPrio::unlockWriting() {
     writer->release();
     fifo->release();
 }
+
+// SEM Writers Prio
+
+ReaderWriterSemaphoreWritersPrio::ReaderWriterSemaphoreWritersPrio(SynchroController* synchroController): AbstractReaderWriter(synchroController),
+    mutexReaders(new OSemaphore(1)), mutexWriters(new OSemaphore(1)), writer(new OSemaphore(1)), reader(new OSemaphore(1)), mutex(new OSemaphore(1)), nbReaders(0), nbWriters(0)
+{
+
+}
+
+ReaderWriterSemaphoreWritersPrio::~ReaderWriterSemaphoreWritersPrio() {
+        delete mutexReaders;
+        delete mutexWriters;
+        delete writer;
+        delete reader;
+        delete mutex;
+}
+
+void ReaderWriterSemaphoreWritersPrio::lockReading() {
+    mutexReaders->acquire();
+}
+
+void ReaderWriterSemaphoreWritersPrio::lockWriting();
+void ReaderWriterSemaphoreWritersPrio::unlockReading();
+void ReaderWriterSemaphoreWritersPrio::unlockWriting();
+
+
+

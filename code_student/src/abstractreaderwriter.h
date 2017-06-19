@@ -37,5 +37,24 @@ public:
     virtual void unlockWriting();
 };
 
+class ReaderWriterSemaphoreWritersPrio : public AbstractReaderWriter {
+protected:
+    OSemaphore* mutexReaders;
+    OSemaphore* mutexWriters;
+    OSemaphore* writer;
+    OSemaphore* reader;
+    OSemaphore* mutex;
+    int nbReaders;
+    int nbWriters;
+
+public:
+    ReaderWriterSemaphoreWritersPrio(SynchroController* synchroController);
+    virtual ~ReaderWriterSemaphoreWritersPrio();
+    virtual void lockReading();
+    virtual void lockWriting();
+    virtual void unlockReading();
+    virtual void unlockWriting();
+};
+
 
 #endif // ABSTRACTREADERWRITER_H
