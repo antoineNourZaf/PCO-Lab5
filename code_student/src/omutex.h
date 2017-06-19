@@ -8,14 +8,14 @@
 class OMutex
 {
 private:
-   const QString name;
+   const QString& name;
    QMutex mutex;
    WaitingLogger *logger;
 
 public:
     OMutex(WaitingLogger* waitingLogger);
 
-    void lock(MyThread* thread);
+    void lock(const QString& threadName);
 
     bool tryLock();
 

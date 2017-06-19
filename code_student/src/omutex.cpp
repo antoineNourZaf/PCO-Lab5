@@ -5,10 +5,10 @@ OMutex::OMutex(WaitingLogger* waitingLogger):name("Mutex")
     logger = waitingLogger;
 }
 
-void OMutex::lock(MyThread* thread){
-    logger->addWaiting(thread->objectName(),name);
+void OMutex::lock(const QString& threadName){
+    logger->addWaiting(threadName,name);
     mutex.lock();
-    logger->removeWaiting(thread->objectName(),name);
+    logger->removeWaiting(threadName,name);
 }
 
 bool OMutex::tryLock(){
