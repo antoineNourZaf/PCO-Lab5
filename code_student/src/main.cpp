@@ -37,6 +37,25 @@ int main(int argc, char *argv[])
         writers[t]->start();
     }
 
+
+
+    bool continuing = true;
+    char key;
+    cin >> key;
+    while (continuing) {
+        cout << "Press <Enter> to continue monitor or <esc> to exit" << endl;
+
+        // Wait for a key press
+        cin >> key;
+
+        if(cin.get() == '\n'){
+            SynchroController::getInstance()->resume();
+        } else {
+            // If key was <esc>
+            continuing = false;
+        }
+    }
+
     for (int t = 0; t < NB_READER; t++) {
         readers[t]->wait();
     }
@@ -45,22 +64,6 @@ int main(int argc, char *argv[])
         writers[t]->wait();
     }
 
-    bool continuing = true;
-
-    while (continuing) {
-
-        char key;
-
-        // Wait for a key press
-        cin >> key;
-
-        if (key == 32) {
-            // If key is <enter>
-            SynchroController::getInstance()->resume();
-        } else if (key == 'q' || 'Q') { // If key was Q (for escape)
-            continuing = false;
-        }
-    }
 
     // Kill the threads
 
