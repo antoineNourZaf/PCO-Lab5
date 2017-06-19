@@ -16,10 +16,6 @@ QList<WaitingQueue *> WaitingLogger::getQueues() const
     return queues;
 }
 
-void WaitingLogger::updateView()
-{
-
-}
 
 QStringList ReadWriteLogger::getResourceAccesses() const
 {
@@ -41,11 +37,34 @@ void ReadWriteLogger::removeResourceAccess(const QString &threadName)
 
 }
 
-void WaitingLogger::addWaiting(const QString &threadName, const QString &objectName){
+WaitingQueue::WaitingQueue(QString objectName, QStringList threadNames){
+    this->name = objectName;
+    this->threadNames = threadNames;
+}
 
+void WaitingLogger::addWaiting(const QString &threadName, const QString &objectName){
+    for(WaitingQueue* queue : queues){
+        if(queue->name == objectName){
+            if(!queue->threadNames.contains(threadName))
+                queue->threadNames.append(threadName);
+        }
+    }
+    queues.append(new WaitingQueue(objectName, QStringList()<<threadName));
+
+    //updateView();
 }
 
 void WaitingLogger::removeWaiting(const QString &threadName, const QString &objectName){
+    for(WaitingQueue* queue : queues){
+        if(queue->name == objectName){
+            if(queue->threadNames.contains(threadName)){
+                queue->threadNames.removeOne(threadName);
+                if(queue->threadNames.size()==0){
+                  //supprimer queue
+                }
+            }
+        }
+    }
 
 }
 

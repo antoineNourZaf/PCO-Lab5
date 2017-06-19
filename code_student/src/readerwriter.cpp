@@ -14,8 +14,11 @@ AbstractReaderWriter::~AbstractReaderWriter() {
 }
 
 
-// SEMAPHORES
-// SEM Equal Prio
+/******************** IMPLEMENTATIONS SEMAPHORES **************************
+/*********************************************************
+ * Priorité égale
+ *********************************************************/
+
 ReaderWriterSemaphoreEqualPrio::ReaderWriterSemaphoreEqualPrio(SynchroController* synchroController): AbstractReaderWriter(synchroController),
     mutex(new OSemaphore(1)), fifo(new OSemaphore(1)), writer(new OSemaphore(1)), nbReader(0){
 
@@ -59,7 +62,9 @@ void ReaderWriterSemaphoreEqualPrio::unlockWriting(const QString& threadName) {
     fifo->release();
 }
 
-// SEM Writers Prio
+/*******************************************************
+ * EM Writers Prio
+ *******************************************************/
 
 ReaderWriterSemaphoreWritersPrio::ReaderWriterSemaphoreWritersPrio(SynchroController* synchroController): AbstractReaderWriter(synchroController),
     mutexReaders(new OSemaphore(1)), mutexWriters(new OSemaphore(1)), writer(new OSemaphore(1)), reader(new OSemaphore(1)), mutex(new OSemaphore(1)), nbReaders(0), nbWriters(0)

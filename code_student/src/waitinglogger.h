@@ -6,8 +6,10 @@
 
 class WaitingQueue
 {
+public:
     QString name;
     QStringList threadNames;
+    WaitingQueue(QString objectName,QStringList threadNames);
 };
 
 class WaitingLogger
@@ -40,7 +42,7 @@ protected:
      * In this first version it could simply modify the display in
      * the terminal.
      */
-    virtual void updateView();
+    virtual void updateView() = 0;
 
     QList<WaitingQueue *> queues;
 
