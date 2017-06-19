@@ -3,6 +3,7 @@
 
 #include "synchrocontroller.h"
 #include "osemaphore.h"
+#include "ohoaremonitor.h"
 
 class AbstractReaderWriter {
 protected:
@@ -62,6 +63,28 @@ public:
     virtual void unlockReading(const QString& name);
     virtual void unlockWriting(const QString& name);
 };
+
+/**
+ * @brief The ReaderWriterHoarWritersPrio class
+ */
+class ReaderWriterHoarWritersPrio : public AbstractReaderWriter, public OHoareMonitor {
+protected:
+    Condition waitWriting;
+    Condition waitReading;
+    int nbReaders;
+    bool writingInProgress;
+    int nbWritersWaiting;
+
+public:
+    ReaderWriterHoarWritersPrio(SynchroController* synchroController);
+    ~ReaderWriterHoarWritersPrio();
+
+    virtual void lockReading(const QString& name);
+    virtual void lockWriting(const QString& name);
+    virtual void unlockReading(const QString& name);
+    virtual void unlockWriting(const QString& name);
+};
+
 
 
 
