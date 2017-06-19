@@ -33,9 +33,21 @@ void OHoareMonitor::monitorOut() {
 
 void OHoareMonitor::wait(Condition &cond, const QString& threadName) {
     cond.nbWaiting++;
-
+    if (monitorNbSignal > 0) {
+        monitorSignal->release();
+    }
+    else {
+        monitorMutex->release();
+    }
+    cond.waitingSem->acquire(threadName);
+    cond.nbWaiting--;
 }
 
 void OHoareMonitor::signal(Condition &cond, const QString& threadName) {
-
+    if (cond.nbWaiting > 0) {
+        monitorNbSignal++;
+        cond.waitingSem->release();
+        monitorSignal->acquire(threadName);
+        monitorNbSignal--;
+    }
 }

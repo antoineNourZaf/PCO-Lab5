@@ -16,9 +16,9 @@ public:
     virtual void unlockWriting(const QString& name) = 0;
 };
 
-/**************************************************
- *                  Priorité egale
-***************************************************/
+// **************************************************
+// *                  Priorité egale
+// ***************************************************
 class ReaderWriterSemaphoreEqualPrio : public AbstractReaderWriter {
 protected:
 
@@ -39,9 +39,9 @@ public:
     virtual void unlockWriting(const QString& name);
 };
 
-/***************************************************
- *              Redacteurs prioritaire
- * *************************************************/
+// **************************************************
+// *             Redacteurs prioritaire
+// **************************************************
 class ReaderWriterSemaphoreWritersPrio : public AbstractReaderWriter {
 protected:
 
