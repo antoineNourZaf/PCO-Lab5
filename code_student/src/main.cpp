@@ -24,35 +24,43 @@ int main(int argc, char *argv[])
 
     // Start the threads
 
-    // Readers
-    for(int t = 0; t<NB_READER; t++){
+    //Readers
+    for (int t = 0; t < NB_READER; t++) {
         cout << "Creating the reader " << t << endl;
         readers[t] = new ReaderThread(t,protocoleSema);
         readers[t]->start();
     }
-    for(int t = 0; t<NB_WRITER; t++){
+
+    //Writers
+    for (int t = 0; t < NB_WRITER; t++) {
         cout << "Creating the writer " << t << endl;
         writers[t] = new WriterThread(t,protocoleSema);
         writers[t]->start();
     }
-    for(int t=0; t<NB_READER; t++) {
+
+    for (int t = 0; t < NB_READER; t++) {
         readers[t]->wait();
     }
 
-    for(int t=0; t<NB_WRITER; t++) {
+    for(int t = 0; t < NB_WRITER; t++) {
         writers[t]->wait();
     }
 
     bool continuing = true;
 
     while (continuing) {
+
+        char key;
+
         // Wait for a key press
+        cin >> key;
 
-        // If key is <enter>
-        SynchroController::getInstance()->resume();
-
-        // If key was <esc>
-        continuing = false;
+        if (key == 32) {
+            // If key is <enter>
+            SynchroController::getInstance()->resume();
+        } else if (key == 'q' || 'Q') { // If key was Q (for escape)
+            continuing = false;
+        }
     }
 
     // Kill the threads
