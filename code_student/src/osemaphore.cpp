@@ -9,10 +9,10 @@ OSemaphore::OSemaphore(int n):name("Semaphore"),semaphore(new QSemaphore())
 }
 
 
-void OSemaphore::acquire(MyThread* thread){
-    logger->addWaiting(thread->objectName(),name);
+void OSemaphore::acquire(const QString threadName){
+    //logger->addWaiting(threadName,name);
     semaphore->acquire();
-    logger->removeWaiting(thread->objectName(),name);
+    //logger->removeWaiting(threadName,name);
 }
 
 void OSemaphore::release(){

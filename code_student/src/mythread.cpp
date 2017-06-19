@@ -27,10 +27,10 @@ void ReaderThread::run() {
 
     while (true) {
         syncCtr->pause();
-        readerWriter->lockReading();
+        readerWriter->lockReading(QThread::objectName());
         cout << "Task " << tid << ": lecture" << endl;
         syncCtr->pause();
-        readerWriter->unlockReading();
+        readerWriter->unlockReading(QThread::objectName());
     }
 }
 
@@ -41,9 +41,9 @@ void WriterThread::run() {
 
     while (true) {
         syncCtr->pause();
-        readerWriter->lockWriting();
+        readerWriter->lockWriting(QThread::objectName());
         cout << "Task " << tid << ": écriture" << endl;
         syncCtr->pause();
-        readerWriter->unlockWriting();
+        readerWriter->unlockWriting(QThread::objectName());
     }
 }
