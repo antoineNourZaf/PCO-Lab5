@@ -5,14 +5,15 @@
 #include "waitinglogger.h"
 #include "mythread.h"
 
-class OMutex
-{
+class OMutex {
 private:
-   const QString name = "Mutex";
-   QMutex mutex;
-   WaitingLogger *logger;
+
+    const QString name = "Mutex";
+    QMutex mutex;
+    WaitingLogger *logger;
 
 public:
+
     OMutex(WaitingLogger* waitingLogger);
 
     void lock(const QString& threadName);

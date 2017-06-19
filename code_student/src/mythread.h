@@ -8,12 +8,13 @@
 // forward declaration
 class AbstractReaderWriter;
 
-
 class MyThread : public QThread {
 protected:
+
     SynchroController *syncCtr;
     AbstractReaderWriter *readerWriter;
     int tid;
+
 public:
 
     MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync,const QString& nom);
@@ -23,12 +24,14 @@ public:
 
 class ReaderThread : public MyThread {
 public:
+
     ReaderThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync, const QString& nom);
     void run();
 };
 
 class WriterThread : public MyThread {
 public:
+
     WriterThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync, const QString& nom);
     void run();
 };

@@ -7,18 +7,21 @@
 
 class MyThread;
 
-class OSemaphore
-{
+class OSemaphore {
 private:
+
     const QString name;
     int nbPermission;
     QSemaphore *semaphore;
     WaitingLogger *logger;
 
 public:
+
     OSemaphore(int n = 0);
 
-    void acquire(const QString& threadName); // pour connaitre quel thread fait l'acquire
+
+    void acquire(const QString & threadName); // pour connaitre quel thread fait l'acquire
+
 
     void release();
 

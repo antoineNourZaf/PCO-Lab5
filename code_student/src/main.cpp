@@ -1,14 +1,20 @@
-#include <QApplication>
+/**
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * Voici notre implementation du laboratoire :
+ */
+ #include <QApplication>
 #include <iostream>
 
 #include "mythread.h"
 
 #define NB_READER 4
 #define NB_WRITER 4
-#ifdef QT_NO_DEBUG_OUTPUT
-#undef QT_NO_DEBUG_OUTPUT
 
-#endif
 
 
 using namespace std;
@@ -21,16 +27,14 @@ int main(int argc, char *argv[])
     static SynchroController *syncCtrl = SynchroController::getInstance();
     AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphoreEqualPrio(syncCtrl);
 
-
     ReaderThread *readers[NB_READER];
     WriterThread *writers[NB_WRITER];
 
-    // Create the threads
-
-    // Start the threads
+    // Create & start the threads
 
     //Readers
     for (int t = 0; t < NB_READER; t++) {
+
         cout << "Creating the reader " << t << endl;
         readers[t] = new ReaderThread(t,protocoleSema,syncCtrl,"Lecter " + t);
         readers[t]->start();
@@ -38,6 +42,7 @@ int main(int argc, char *argv[])
 
     //Writers
     for (int t = 0; t < NB_WRITER; t++) {
+
         cout << "Creating the writer " << t << endl;
         writers[t] = new WriterThread(t,protocoleSema,syncCtrl,"Writer " + t);
         writers[t]->start();
@@ -56,8 +61,11 @@ int main(int argc, char *argv[])
 
         if(cin.get() == '\n'){
             SynchroController::getInstance()->resume();
-        } else {
+
+        } else if (key == 'q' || key == 'Q') { // If key was Q (for escape)
+
             // If key was <esc>
+
             continuing = false;
         }
     }
@@ -71,6 +79,14 @@ int main(int argc, char *argv[])
     }
 
     // Kill the threads
+    for (int i = 0; i < NB_READER; ++i) {
+        //a little bit violent but it's fine
+        readers[i]->terminate();
+    }
+
+    for (int i = 0; i < NB_WRITER; ++i) {
+        writers[i]->terminate();
+    }
 
     return 0;
 
