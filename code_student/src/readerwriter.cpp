@@ -75,7 +75,7 @@ ReaderWriterSemaphoreWritersPrio::~ReaderWriterSemaphoreWritersPrio() {
         delete mutex;
 }
 
-void ReaderWriterSemaphoreWritersPrio::lockReading(const QString threadName) {
+void ReaderWriterSemaphoreWritersPrio::lockReading(const QString& threadName) {
     mutexReaders->acquire(threadName); // seulement 1 lecteur peut entrer
     reader->acquire(threadName); // un redacteur va bloquer les rédacteurs et les lecteurs
     mutex->acquire(threadName);
@@ -88,12 +88,16 @@ void ReaderWriterSemaphoreWritersPrio::lockReading(const QString threadName) {
     mutexReaders->release();
 }
 
-void ReaderWriterSemaphoreWritersPrio::lockWriting(const QString threadName) {
+void ReaderWriterSemaphoreWritersPrio::lockWriting(const QString& threadName) {
 
 }
 
-void ReaderWriterSemaphoreWritersPrio::unlockReading(const QString threadName);
-void ReaderWriterSemaphoreWritersPrio::unlockWriting(const QString threadName);
+void ReaderWriterSemaphoreWritersPrio::unlockReading(const QString& threadName) {
 
+}
+
+void ReaderWriterSemaphoreWritersPrio::unlockWriting(const QString& threadName) {
+
+}
 
 

@@ -50,10 +50,10 @@ protected:
 public:
     ReaderWriterSemaphoreWritersPrio(SynchroController* synchroController);
     virtual ~ReaderWriterSemaphoreWritersPrio();
-    virtual void lockReading();
-    virtual void lockWriting();
-    virtual void unlockReading();
-    virtual void unlockWriting();
+    virtual void lockReading(const QString& name);
+    virtual void lockWriting(const QString& name);
+    virtual void unlockReading(const QString& name);
+    virtual void unlockWriting(const QString& name);
 };
 
 
