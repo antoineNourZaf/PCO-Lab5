@@ -52,22 +52,21 @@ int main(int argc, char *argv[])
     }
 
     bool continuing = true;
-
+    char key;
+    cin >> key;
     while (continuing) {
-
-        char key;
+        cout << "Press <Enter> to continue monitor or <esc> to exit" << endl;
 
         // Wait for a key press
         cin >> key;
 
-        if (key == 32) {
-            // If key is <enter>
+        if(cin.get() == '\n'){
             SynchroController::getInstance()->resume();
-        } else if (key == 'q' || 'Q') { // If key was Q (for escape)
+        } else {
+            // If key was <esc>
             continuing = false;
         }
     }
-
     // Kill the threads
 
     return 0;
