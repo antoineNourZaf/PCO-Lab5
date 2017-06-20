@@ -16,7 +16,6 @@
 
 #include <QMutex>
 #include "waitinglogger.h"
-//#include "mythread.h" //ICI problème ? Pourquo ?
 
 class OMutex {
 private:

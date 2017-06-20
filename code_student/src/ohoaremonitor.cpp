@@ -9,7 +9,10 @@
  *
  * Ce fichier définit le classe OHoareMonitor.
  */
+
 #include "ohoaremonitor.h"
+
+int OHoareMonitor::compteur=0;
 
 OHoareMonitor::Condition::Condition() :
     waitingSem(new OSemaphore(0)), nbWaiting(0)
@@ -18,9 +21,9 @@ OHoareMonitor::Condition::Condition() :
 }
 
 OHoareMonitor::OHoareMonitor() :
-    monitorMutex(new OSemaphore(1)), monitorSignal(new OSemaphore(0)), monitorNbSignal(0)
+    monitorMutex(new OSemaphore(1)), monitorSignal(new OSemaphore(0)), monitorNbSignal(0), name("HoareMonitor" + QString::number(compteur))
 {
-
+    compteur++;
 }
 
 OHoareMonitor::~OHoareMonitor() {
@@ -43,6 +46,7 @@ void OHoareMonitor::monitorOut() {
 }
 
 void OHoareMonitor::wait(Condition &cond, const QString& threadName) {
+    WaitingLogger::getInstance()->addWaiting(threadName,name);
     cond.nbWaiting++;
     if (monitorNbSignal > 0) {
         monitorSignal->release();
@@ -50,6 +54,7 @@ void OHoareMonitor::wait(Condition &cond, const QString& threadName) {
     else {
         monitorMutex->release();
     }
+    WaitingLogger::getInstance()->removeWaiting(threadName,name);
     cond.waitingSem->acquire(threadName);
     cond.nbWaiting--;
 }

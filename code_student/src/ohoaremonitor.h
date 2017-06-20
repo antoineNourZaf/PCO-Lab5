@@ -20,9 +20,11 @@
 class OHoareMonitor
 {
 private:
+    const QString name;
     OSemaphore* monitorMutex;
     OSemaphore* monitorSignal;
     int monitorNbSignal;
+    static int compteur;
 protected:
 
     class Condition {

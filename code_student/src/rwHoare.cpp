@@ -10,30 +10,31 @@
  * Ce fichier définit les lecteurs-redacteurs implémentés par des moniteurs de Hoare,
  * avec deux priorités
  */
+
 #include "abstractreaderwriter.h"
 
-ReaderWriterHoareWritersPrio::ReaderWriterHoareWritersPrio() : nbReaders(0), writingInProgress(false), nbWritersWaiting(0)
+RWHoareWritersPrio::RWHoareWritersPrio() : nbReaders(0), writingInProgress(false), nbWritersWaiting(0)
 {
-
 }
 
-ReaderWriterHoareWritersPrio::~ReaderWriterHoareWritersPrio() {
-
+RWHoareWritersPrio::~RWHoareWritersPrio() {
 }
 
-void ReaderWriterHoareWritersPrio::lockReading(const QString& threadName) {
+void RWHoareWritersPrio::lockReading(const QString& threadName) {
+    SynchroController::getInstance()->pause();
     monitorIn(threadName);
     if ((writingInProgress) || (nbWritersWaiting > 0)) { // les lecteurs n'ont pas la priorité sur les rédacteurs, donc on vérifie qu'aucun rédacteur n'attend
         wait(waitReading, threadName);
         signal(waitReading, threadName);
     }
     nbReaders++;
-    monitorOut();
     //Accès ressources
     ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
+    monitorOut();
 }
 
-void ReaderWriterHoareWritersPrio::lockWriting(const QString& threadName) {
+void RWHoareWritersPrio::lockWriting(const QString& threadName) {
+    SynchroController::getInstance()->pause();
     monitorIn(threadName);
     if ((nbReaders > 0) || (writingInProgress)) {
         nbWritersWaiting++; // le rédacteur attent la libération d'un rédacteur ou d'un lecteur
@@ -41,26 +42,25 @@ void ReaderWriterHoareWritersPrio::lockWriting(const QString& threadName) {
         nbWritersWaiting--;
     }
     writingInProgress = true;
-    monitorOut();
     //Accès ressources
     ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
+    monitorOut();
 }
 
-void ReaderWriterHoareWritersPrio::unlockReading(const QString& threadName) {
-    //Fin accès ressources
-    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
-
+void RWHoareWritersPrio::unlockReading(const QString& threadName) {
+    SynchroController::getInstance()->pause();
     monitorIn(threadName);
     nbReaders--;
     if (nbReaders == 0) { // le dernier lecteur
         signal(waitWriting, threadName); // libère la rédaction
     }
+    //Fin accès ressources
+    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
     monitorOut();
 }
 
-void ReaderWriterHoareWritersPrio::unlockWriting(const QString& threadName) {
-    //Fin accès ressources
-    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
+void RWHoareWritersPrio::unlockWriting(const QString& threadName) {
+    SynchroController::getInstance()->pause();
     monitorIn(threadName);
     writingInProgress = false;
     if (nbWritersWaiting >0) { // si d'autres rédacteurs attendent,
@@ -69,6 +69,8 @@ void ReaderWriterHoareWritersPrio::unlockWriting(const QString& threadName) {
     else {
         signal(waitReading, threadName); // sinon les lecteurs peuvent passer
     }
+    //Fin accès ressources
+    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
     monitorOut();
 }
 

@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     WriterThread *writers[NB_WRITER];
 
     // Create the resource manager object
-    AbstractReaderWriter *protocoleSema = new RWMesaWritersPrio();
+    AbstractReaderWriter *protocoleSema = new RWHoareWritersPrio();
 
     // Create & start the threads
     //Readers

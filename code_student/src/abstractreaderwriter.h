@@ -113,29 +113,6 @@ public:
     virtual void unlockWriting(const QString& name);
 };
 
-
-/**
- * @brief The ReaderWriterHoarWritersPrio class
- * implémentation par moniteur de Hoare, avec une priorité pour les rédacteurs
- */
-class ReaderWriterHoareWritersPrio : public AbstractReaderWriter, public OHoareMonitor {
-protected:
-    Condition waitWriting; //
-    Condition waitReading;
-    int nbReaders;
-    bool writingInProgress;
-    int nbWritersWaiting;
-
-public:
-    ReaderWriterHoareWritersPrio();
-    ~ReaderWriterHoareWritersPrio();
-
-    virtual void lockReading(const QString& name);
-    virtual void lockWriting(const QString& name);
-    virtual void unlockReading(const QString& name);
-    virtual void unlockWriting(const QString& name);
-};
-
 /**
  * @brief The RWMesaEqualPrio class
  */
@@ -172,6 +149,28 @@ protected:
 public:
     RWMesaWritersPrio();
     ~RWMesaWritersPrio();
+    virtual void lockReading(const QString& name);
+    virtual void lockWriting(const QString& name);
+    virtual void unlockReading(const QString& name);
+    virtual void unlockWriting(const QString& name);
+};
+
+/**
+ * @brief The ReaderWriterHoarWritersPrio class
+ * implémentation par moniteur de Hoare, avec une priorité pour les rédacteurs
+ */
+class RWHoareWritersPrio : public AbstractReaderWriter, public OHoareMonitor {
+protected:
+    Condition waitWriting; //
+    Condition waitReading;
+    int nbReaders;
+    bool writingInProgress;
+    int nbWritersWaiting;
+
+public:
+    RWHoareWritersPrio();
+    ~RWHoareWritersPrio();
+
     virtual void lockReading(const QString& name);
     virtual void lockWriting(const QString& name);
     virtual void unlockReading(const QString& name);
