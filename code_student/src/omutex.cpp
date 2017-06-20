@@ -5,7 +5,6 @@
 OMutex::OMutex()
 {
     WaitingLogger::getInstance()->creatQueueObject(this->name);
-    slotFree= true;
 }
 
 OMutex::~OMutex(){
@@ -15,19 +14,17 @@ OMutex::~OMutex(){
 
 void OMutex::lock(const QString& threadName){
 
-    if(!slotFree)
-         WaitingLogger::getInstance()->addWaiting(threadName,name);
-    mutex.lock();
-    slotFree = false;
-     WaitingLogger::getInstance()->removeWaiting(threadName,name); //IL L'A TRAITER DONC PLUS DANS LA FILE
+    if(!tryLock()){
+        WaitingLogger::getInstance()->addWaiting(threadName,name);
+        mutex.lock();
+        WaitingLogger::getInstance()->removeWaiting(threadName,name); //IL L'A TRAITER DONC PLUS DANS LA FILE
+    }
 }
 
 bool OMutex::tryLock(){
-    //TODO
-    return true;
+    return mutex.tryLock();
 }
 
 void OMutex::unlock(){
-    slotFree = true;
     mutex.unlock();
 }

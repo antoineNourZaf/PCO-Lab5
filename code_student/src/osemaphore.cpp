@@ -6,7 +6,6 @@ int OSemaphore::compteur=0;
 
 OSemaphore::OSemaphore(int n):name("Semaphore" + QString::number(compteur)),semaphore(new QSemaphore(n)), nbPermission(n)
 {
-    nbSlotFree = nbPermission;
     compteur++;
     WaitingLogger::getInstance()->creatQueueObject(this->name);
 }
@@ -27,7 +26,6 @@ void OSemaphore::acquire(const QString& threadName){
 
 void OSemaphore::release(){
     semaphore->release();
-    nbSlotFree++;
 }
 
 bool OSemaphore::tryAcquire(){
