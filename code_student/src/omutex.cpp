@@ -9,7 +9,7 @@ OMutex::OMutex(WaitingLogger* waitingLogger)
 void OMutex::lock(const QString& threadName){
     logger->addWaiting(threadName,name); //threadName,this->name
     mutex.lock();
-    logger->removeWaiting(threadName,name);
+    logger->removeWaiting(threadName,name); //IL L'A TRAITER DONC PLUS DANS LA FILE
 }
 
 bool OMutex::tryLock(){

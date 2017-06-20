@@ -19,12 +19,14 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    // Create the resource manager object
-    static SynchroController *syncCtrl = SynchroController::getInstance();
-    AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphoreEqualPrio(syncCtrl);
-
     ReaderThread *readers[NB_READER];
     WriterThread *writers[NB_WRITER];
+
+    // Create the resource manager object
+    static SynchroController *syncCtrl = SynchroController::getInstance();
+    AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphoreEqualPrio(WaitingLogger::getInstance());
+
+
 
     // Create & start the threads
 
@@ -32,7 +34,7 @@ int main(int argc, char *argv[])
     for (int t = 0; t < NB_READER; t++) {
 
         cout << "Creating/Starting the reader " << t << endl;
-        readers[t] = new ReaderThread(t,protocoleSema,syncCtrl, "Reader" + QString::number(t));
+        readers[t] = new ReaderThread(t,protocoleSema,SynchroController::getInstance());
         readers[t]->start();
     }
 
@@ -40,7 +42,7 @@ int main(int argc, char *argv[])
     for (int t = 0; t < NB_WRITER; t++) {
 
         cout << "Creating/Starting the writer " << t << endl;
-        writers[t] = new WriterThread(t,protocoleSema,syncCtrl,"Writer" + QString::number(t));
+        writers[t] = new WriterThread(t,protocoleSema,syncCtrl);
         writers[t]->start();
     }
 

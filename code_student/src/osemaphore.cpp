@@ -4,7 +4,7 @@
 
 int OSemaphore::compteur=0;
 
-OSemaphore::OSemaphore(int n):name("Semaphore" + QString::number(compteur)),semaphore(new QSemaphore())
+OSemaphore::OSemaphore(int n):name("Semaphore" + QString::number(compteur)),semaphore(new QSemaphore(n))
 {
     nbPermission = n;
     logger = WaitingLogger::getInstance();

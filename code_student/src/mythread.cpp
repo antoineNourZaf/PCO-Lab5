@@ -3,15 +3,15 @@
 
 using namespace std;
 
-MyThread::MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync,const QString& nom)
+MyThread::MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync)
 {
     this->tid = threadId;
     this->readerWriter = protocole;
     this->syncCtr = sync;
-    QThread::setObjectName(nom);
 }
 
-ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync,const QString& nom) : MyThread(threadId,protocole,sync,nom) {
+ReaderThread::ReaderThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync) : MyThread(threadId,protocole,sync) {
+    QThread::setObjectName("Reader" + QString::number(threadId));
 
 }
 
@@ -21,12 +21,14 @@ void ReaderThread::run() {
         syncCtr->pause();
         readerWriter->lockReading(QThread::objectName());
         cout << "Task " << tid << ": lecture" << endl;
+        //
         syncCtr->pause();
         readerWriter->unlockReading(QThread::objectName());
     }
 }
 
-WriterThread::WriterThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync, const QString& nom) : MyThread(threadId,protocole, sync,nom) {
+WriterThread::WriterThread(int threadId, AbstractReaderWriter* protocole, SynchroController *sync) : MyThread(threadId,protocole, sync) {
+    QThread::setObjectName("Writer" + QString::number(threadId));
 }
 
 void WriterThread::run() {

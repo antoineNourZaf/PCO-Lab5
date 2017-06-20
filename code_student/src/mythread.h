@@ -17,7 +17,7 @@ protected:
 
 public:
 
-    MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync,const QString& nom);
+    MyThread(int threadId, AbstractReaderWriter *protocole,SynchroController *sync);
 
 };
 
@@ -25,14 +25,14 @@ public:
 class ReaderThread : public MyThread {
 public:
 
-    ReaderThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync, const QString& nom);
+    ReaderThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync);
     void run();
 };
 
 class WriterThread : public MyThread {
 public:
 
-    WriterThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync, const QString& nom);
+    WriterThread(int threadId, AbstractReaderWriter* protcole, SynchroController *sync);
     void run();
 };
 

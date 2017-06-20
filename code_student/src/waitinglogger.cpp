@@ -32,12 +32,16 @@ ReadWriteLogger::ReadWriteLogger()
 
 void ReadWriteLogger::addResourceAccess(const QString &threadName)
 {
-
+    if(!resourceAccesses.contains(threadName)){
+        resourceAccesses.append(threadName);
+    }
 }
 
 void ReadWriteLogger::removeResourceAccess(const QString &threadName)
 {
-
+    if(resourceAccesses.contains(threadName)){
+        resourceAccesses.removeOne(threadName);
+    }
 }
 
 WaitingQueue::WaitingQueue(QString objectName, QStringList threadNames){
@@ -46,7 +50,6 @@ WaitingQueue::WaitingQueue(QString objectName, QStringList threadNames){
 }
 
 void WaitingLogger::addWaiting(const QString &threadName, const QString &objectName){
-    std::cout << "ADDWAITING" << std::endl;
     bool find = false;
     for(WaitingQueue* queue : queues){
         if(queue->name == objectName && !queue->threadNames.contains(threadName)){
@@ -89,4 +92,10 @@ void ReadWriteLogger::updateView()
          }
          std::cout<<endl;
      }
+     std::cout<< "In resource : ";
+     for(QString threadRes : getResourceAccesses()){
+         std::cout << threadRes.toStdString() << " ";
+     }
+     std::cout<<std::endl;
+
 }
