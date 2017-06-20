@@ -11,7 +11,8 @@ bool OWaitCondition::wait(OMutex *lockedMutex) {
         return false;
 
     lockedMutex->unlock();
-
+    //juste to skip warning
+    return true;
 }
 
 void OWaitCondition::wakeOne() {

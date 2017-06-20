@@ -1,15 +1,14 @@
 #ifndef ABSTRACTREADERWRITER_H
 #define ABSTRACTREADERWRITER_H
 
+#include "synchrocontroller.h"
 #include "waitinglogger.h"
 #include "osemaphore.h"
 #include "ohoaremonitor.h"
 
 class AbstractReaderWriter {
-protected:
-    WaitingLogger* RWLogger;
 public:
-    AbstractReaderWriter(WaitingLogger* logger);
+    AbstractReaderWriter();
     virtual ~AbstractReaderWriter();
     virtual void lockReading(const QString& name)   = 0;
     virtual void lockWriting(const QString& name)   = 0;
@@ -22,16 +21,14 @@ public:
 // ***************************************************
 class ReaderWriterSemaphoreEqualPrio : public AbstractReaderWriter {
 protected:
-    OSemaphore* mutex; // accès à la nbReaders
     int nbReader;
-
+    OSemaphore* mutex; // accès à la nbReaders
     OSemaphore* fifo; // file d'attente pour tout le monde
-
     OSemaphore* writer; // le premier lecteur bloque les rédacteurs ET un rédacteur bloque tt le monde
 
 public:
 
-    ReaderWriterSemaphoreEqualPrio(WaitingLogger* logger);
+    ReaderWriterSemaphoreEqualPrio();
     virtual ~ReaderWriterSemaphoreEqualPrio();
     virtual void lockReading(const QString& name);
     virtual void lockWriting(const QString& name);
@@ -51,7 +48,6 @@ class ReaderWriterHoare;
  */
 class ReaderWriterSemaphoreWritersPrio : public AbstractReaderWriter {
 protected:
-
     OSemaphore* mutexReaders;
     OSemaphore* mutexWriters;
     OSemaphore* writer;
@@ -61,8 +57,7 @@ protected:
     int nbWriters;
 
 public:
-
-    ReaderWriterSemaphoreWritersPrio(WaitingLogger* logger);
+    ReaderWriterSemaphoreWritersPrio();
     virtual ~ReaderWriterSemaphoreWritersPrio();
     virtual void lockReading(const QString& name);
     virtual void lockWriting(const QString& name);
@@ -82,7 +77,7 @@ protected:
     int nbWritersWaiting;
 
 public:
-    ReaderWriterHoareWritersPrio(WaitingLogger* logger);
+    ReaderWriterHoareWritersPrio();
     ~ReaderWriterHoareWritersPrio();
 
     virtual void lockReading(const QString& name);

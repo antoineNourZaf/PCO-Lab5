@@ -3,30 +3,22 @@
 
 #include <QSemaphore>
 #include "waitinglogger.h"
-//#include "mythread.h"
-
-class MyThread;
 
 class OSemaphore {
 private:
-
-    const QString name;
+    static int compteur;
     int nbPermission;
+    const QString name;
     QSemaphore *semaphore;
     WaitingLogger *logger;
-    static int compteur;
 
 public:
-
     OSemaphore(int n = 0);
-
-
-    void acquire(const QString & threadName); // pour connaitre quel thread fait l'acquire
-
-
+    ~OSemaphore();
+    void acquire(const QString & threadName);
     void release();
-
     bool tryAcquire();
+
 };
 
 #endif // PSEMAPHORE_H

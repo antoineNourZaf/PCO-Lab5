@@ -15,6 +15,7 @@ private:
 public:
 
     OMutex(WaitingLogger* waitingLogger);
+    ~OMutex();
 
     void lock(const QString& threadName);
 

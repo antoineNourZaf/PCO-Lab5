@@ -1,5 +1,6 @@
 #include "waitinglogger.h"
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -50,52 +51,60 @@ WaitingQueue::WaitingQueue(QString objectName, QStringList threadNames){
 }
 
 void WaitingLogger::addWaiting(const QString &threadName, const QString &objectName){
-    bool find = false;
     for(WaitingQueue* queue : queues){
         if(queue->name == objectName && !queue->threadNames.contains(threadName)){
             queue->threadNames.append(threadName);
-            find = true;
         }
     }
-    if(!find){
-        queues.append(new WaitingQueue(objectName, QStringList()<<threadName));
-    }
-
     updateView();
 }
 
 void WaitingLogger::removeWaiting(const QString &threadName, const QString &objectName){
-    std::cout << "RMWAITING" << std::endl;
-    WaitingQueue* queueToRm = NULL;
     for(WaitingQueue* queue : queues){
-        if(queue->name == objectName){
-            if(queue->threadNames.contains(threadName)){
-                queue->threadNames.removeOne(threadName);
-                if(queue->threadNames.size()==0){
-                  queueToRm=queue;
-                }
-            }
+        if(queue->name == objectName && queue->threadNames.contains(threadName)){
+            queue->threadNames.removeOne(threadName);
         }
-    }
-
-    if(queueToRm != NULL){
-        queues.removeOne(queueToRm);
     }
 }
 
+void WaitingLogger::creatQueueObject(const QString &objectName){
+    bool find = false;
+    for(WaitingQueue* queue : queues){
+        if(queue->name == objectName){
+            find = true;
+        }
+    }
+    if(!find)
+        queues.append(new WaitingQueue(objectName, QStringList()));
+}
+
+void WaitingLogger::rmQueueObject(const QString &objectName){
+    WaitingQueue* queueToRm = NULL;
+    for(WaitingQueue* queue : queues){
+        if(queue->name == objectName){
+            queueToRm = queue;
+        }
+    }
+    if(queueToRm)
+        queues.removeOne(queueToRm);
+}
+
+
 void ReadWriteLogger::updateView()
 {
-     for(WaitingQueue* queue : getQueues()){
-         cout << queue->name.toStdString() << " : ";
-         for(QString thread :queue->threadNames){
-             std::cout<<thread.toStdString()<<" ";
-         }
-         std::cout<<endl;
-     }
-     std::cout<< "In resource : ";
-     for(QString threadRes : getResourceAccesses()){
-         std::cout << threadRes.toStdString() << " ";
-     }
-     std::cout<<std::endl;
+    system("cls");
+    cout << "<Enter> to continue <q>, <esc> to exit !" << endl;
+    for(WaitingQueue* queue : getQueues()){
+        cout << queue->name.toStdString() << " : ";
+        for(QString thread :queue->threadNames){
+            std::cout<<thread.toStdString()<<" ";
+        }
+        std::cout<<endl;
+    }
+    std::cout<< "In resource : ";
+    for(QString threadRes : getResourceAccesses()){
+        std::cout << threadRes.toStdString() << " ";
+    }
+    std::cout<<std::endl;
 
 }

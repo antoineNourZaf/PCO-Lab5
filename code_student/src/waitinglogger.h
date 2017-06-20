@@ -29,6 +29,8 @@ public:
 
     void removeWaiting(const QString& threadName,const QString& objectName);
 
+    void creatQueueObject(const QString& objectName);
+    void rmQueueObject(const QString& objectName);
 
 
 protected:

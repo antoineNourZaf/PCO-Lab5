@@ -7,14 +7,12 @@
 
 class MyThread : public QThread {
 protected:
-
-    SynchroController *syncCtr;
     AbstractReaderWriter *readerWriter;
     static int compteur;
 
 public:
 
-    MyThread(AbstractReaderWriter *protocole,SynchroController *sync);
+    MyThread(AbstractReaderWriter *protocole);
 
 };
 
@@ -22,14 +20,14 @@ public:
 class ReaderThread : public MyThread {
 public:
 
-    ReaderThread(AbstractReaderWriter* protcole, SynchroController *sync);
+    ReaderThread(AbstractReaderWriter* protcole);
     void run();
 };
 
 class WriterThread : public MyThread {
 public:
 
-    WriterThread(AbstractReaderWriter* protcole, SynchroController *sync);
+    WriterThread(AbstractReaderWriter* protcole);
     void run();
 };
 

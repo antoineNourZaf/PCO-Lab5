@@ -5,40 +5,34 @@ using namespace std;
 
 int MyThread::compteur = 0;
 
-MyThread::MyThread( AbstractReaderWriter *protocole,SynchroController *sync)
+MyThread::MyThread( AbstractReaderWriter *protocole)
 {
     this->readerWriter = protocole;
-    this->syncCtr = sync;
     compteur++;
 }
 
-ReaderThread::ReaderThread(AbstractReaderWriter* protocole, SynchroController *sync) : MyThread(protocole,sync) {
+ReaderThread::ReaderThread(AbstractReaderWriter* protocole) : MyThread(protocole) {
     QThread::setObjectName("Reader" + QString::number(compteur));
 }
 
 void ReaderThread::run() {
 
     while (true) {
-        syncCtr->pause();
         readerWriter->lockReading(QThread::objectName());
         cout << "Task " << objectName().toStdString() << endl;
-
-        syncCtr->pause();
         readerWriter->unlockReading(QThread::objectName());
     }
 }
 
-WriterThread::WriterThread(AbstractReaderWriter* protocole, SynchroController *sync) : MyThread(protocole, sync) {
+WriterThread::WriterThread(AbstractReaderWriter* protocole) : MyThread(protocole) {
     QThread::setObjectName("Writer" + QString::number(compteur));
 }
 
 void WriterThread::run() {
 
     while (true) {
-        syncCtr->pause();
         readerWriter->lockWriting(QThread::objectName());
         cout << "Task " << objectName().toStdString() << endl;
-        syncCtr->pause();
         readerWriter->unlockWriting(QThread::objectName());
     }
 }

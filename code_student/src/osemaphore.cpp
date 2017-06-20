@@ -9,12 +9,16 @@ OSemaphore::OSemaphore(int n):name("Semaphore" + QString::number(compteur)),sema
     nbPermission = n;
     logger = WaitingLogger::getInstance();
     compteur++;
+    logger->creatQueueObject(this->name);
+}
+
+OSemaphore::~OSemaphore(){
+    delete semaphore;
+    logger->rmQueueObject(this->name);
 }
 
 
 void OSemaphore::acquire(const QString& threadName){
-
-    std::cout << name.toStdString() << " by : "<< threadName.toStdString() << std::endl;
     logger->addWaiting(threadName,name);
     semaphore->acquire();
     logger->removeWaiting(threadName,name);
@@ -25,5 +29,5 @@ void OSemaphore::release(){
 }
 
 bool OSemaphore::tryAcquire(){
-
+    return tryAcquire();
 }
