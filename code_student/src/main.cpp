@@ -23,26 +23,21 @@ int main(int argc, char *argv[])
     WriterThread *writers[NB_WRITER];
 
     // Create the resource manager object
-    static SynchroController *syncCtrl = SynchroController::getInstance();
     AbstractReaderWriter *protocoleSema = new ReaderWriterSemaphoreEqualPrio(WaitingLogger::getInstance());
-
-
 
     // Create & start the threads
 
     //Readers
     for (int t = 0; t < NB_READER; t++) {
-
         cout << "Creating/Starting the reader " << t << endl;
-        readers[t] = new ReaderThread(t,protocoleSema,SynchroController::getInstance());
+        readers[t] = new ReaderThread(protocoleSema,SynchroController::getInstance());
         readers[t]->start();
     }
 
     //Writers
     for (int t = 0; t < NB_WRITER; t++) {
-
         cout << "Creating/Starting the writer " << t << endl;
-        writers[t] = new WriterThread(t,protocoleSema,syncCtrl);
+        writers[t] = new WriterThread(protocoleSema,SynchroController::getInstance());
         writers[t]->start();
     }
 
@@ -53,6 +48,7 @@ int main(int argc, char *argv[])
 
         if(cin.get() == '\n'){
             SynchroController::getInstance()->resume();
+            cin.clear();
         } else if (cin.get() == 'q' || cin.get() == 'Q' || cin.get() == 27) { // If key was <esc>
             continuing = false;
         }
