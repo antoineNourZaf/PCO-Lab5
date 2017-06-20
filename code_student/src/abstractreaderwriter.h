@@ -8,8 +8,6 @@
 
 class AbstractReaderWriter {
 public:
-    AbstractReaderWriter();
-    virtual ~AbstractReaderWriter();
     virtual void lockReading(const QString& name)   = 0;
     virtual void lockWriting(const QString& name)   = 0;
     virtual void unlockReading(const QString& name) = 0;
