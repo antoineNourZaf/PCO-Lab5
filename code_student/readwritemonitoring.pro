@@ -20,7 +20,10 @@ SOURCES += src/main.cpp\
     src/ohoaremonitor.cpp \
     src/mythread.cpp \
     src/readerwriter.cpp \
-    src/omesamonitor.cpp
+    src/omesamonitor.cpp \
+    src/rwHoare.cpp \
+    src/rwMesa.cpp \
+    src/rwSemaphore.cpp
 
 HEADERS  +=  \
     src/waitinglogger.h \

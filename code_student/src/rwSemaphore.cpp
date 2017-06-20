@@ -1,7 +1,15 @@
 /**
-  * définitions des lecteurs et des rédacteurs
-  */
-
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * @file rwSemaphore.cpp
+ *
+ * Ce fichier définit les lecteurs-redacteurs implémentés par des sémaphores,
+ * avec deux priorités
+ */
 #include "abstractreaderwriter.h"
 #include <iostream>
 
