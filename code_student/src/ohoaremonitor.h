@@ -1,3 +1,17 @@
+/**
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * @file ohoaremonitor.h
+ *
+ * Cette classe déclare un moniteur de Hoare,
+ * cependant les méhtodes de synchronisation vont permettre le monitoring du processus
+ * Ces méthodes prennent alors le nom du thread qui les appelle.
+ *
+ */
 #ifndef OHOAREMONITOR_H
 #define OHOAREMONITOR_H
 

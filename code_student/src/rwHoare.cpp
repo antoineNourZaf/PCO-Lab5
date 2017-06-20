@@ -1,3 +1,15 @@
+/**
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * @file rwHoare.cpp
+ *
+ * Ce fichier définit les lecteurs-redacteurs implémentés par des moniteurs de Hoare,
+ * avec deux priorités
+ */
 #include "abstractreaderwriter.h"
 
 ReaderWriterHoareWritersPrio::ReaderWriterHoareWritersPrio() : nbReaders(0), writingInProgress(false), nbWritersWaiting(0)
