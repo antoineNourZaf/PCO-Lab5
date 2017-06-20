@@ -137,11 +137,11 @@ public:
 };
 
 /**
- * @brief The ReaderWriterHoarWritersPrio class
+ * @brief The RWMesaEqualPrio class
  */
 class RWMesaEqualPrio : public AbstractReaderWriter {
 protected:
-    OWaitCondition* condFIFO;
+    OWaitCondition* fifo;
     OMutex* mutex, mutexFIFO;
     int nbReaders;
     bool writingInProgress;
@@ -150,6 +150,28 @@ public:
     RWMesaEqualPrio();
     ~RWMesaEqualPrio();
 
+    virtual void lockReading(const QString& name);
+    virtual void lockWriting(const QString& name);
+    virtual void unlockReading(const QString& name);
+    virtual void unlockWriting(const QString& name);
+};
+
+/**
+ * @brief The RWMesaWritersPrio class
+ */
+class RWMesaWritersPrio : public AbstractReaderWriter {
+protected:
+    OWaitCondition* waitWriting;
+    OWaitCondition* waitReading;
+    OMutex* mutex;
+    int nbReaders;
+    int nbWaitingReaders;
+    int nbWaitingWriters;
+    bool writingInProgress;
+
+public:
+    RWMesaWritersPrio();
+    ~RWMesaWritersPrio();
     virtual void lockReading(const QString& name);
     virtual void lockWriting(const QString& name);
     virtual void unlockReading(const QString& name);

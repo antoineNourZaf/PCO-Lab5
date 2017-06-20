@@ -32,7 +32,7 @@
 
 #include "mythread.h"
 
-#define NB_READER 15
+#define NB_READER 1
 #define NB_WRITER 20
 
 using namespace std;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     WriterThread *writers[NB_WRITER];
 
     // Create the resource manager object
-    AbstractReaderWriter *protocoleSema = new RWMesaEqualPrio();
+    AbstractReaderWriter *protocoleSema = new RWMesaWritersPrio();
 
     // Create & start the threads
     //Readers
