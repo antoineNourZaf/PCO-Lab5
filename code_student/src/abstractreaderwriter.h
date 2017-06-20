@@ -5,6 +5,8 @@
 #include "waitinglogger.h"
 #include "osemaphore.h"
 #include "ohoaremonitor.h"
+#include "owaitcondition.h"
+#include "omutex.h"
 
 class AbstractReaderWriter {
 public:
@@ -81,6 +83,25 @@ public:
     virtual void unlockWriting(const QString& name);
 };
 
+/**
+ * @brief The ReaderWriterHoarWritersPrio class
+ */
+class RWMesaEqualPrio : public AbstractReaderWriter {
+protected:
+    OWaitCondition* condFIFO;
+    OMutex* mutex, mutexFIFO;
+    int nbReaders;
+    bool writingInProgress;
+
+public:
+    RWMesaEqualPrio();
+    ~RWMesaEqualPrio();
+
+    virtual void lockReading(const QString& name);
+    virtual void lockWriting(const QString& name);
+    virtual void unlockReading(const QString& name);
+    virtual void unlockWriting(const QString& name);
+};
 
 
 

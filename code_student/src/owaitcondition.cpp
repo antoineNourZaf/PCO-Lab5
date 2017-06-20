@@ -1,25 +1,31 @@
 #include "owaitcondition.h"
 
-OWaitCondition::OWaitCondition()
-{
+int OWaitCondition::compteur=0;
 
+OWaitCondition::OWaitCondition() : qCond(new QWaitCondition()), name("WaitCondition" + QString::number(compteur))
+{
+    WaitingLogger::getInstance()->creatQueueObject(this->name);
+    compteur++;
+}
+
+OWaitCondition::~OWaitCondition(){
+    delete qCond;
+     WaitingLogger::getInstance()->rmQueueObject(this->name);
 }
 
 bool OWaitCondition::wait(OMutex *lockedMutex) {
-
     if (lockedMutex == nullptr)
         return false;
-
-    lockedMutex->unlock();
-    //juste to skip warning
-    return true;
+    //WaitingLogger::getInstance()->addWaiting(threadName,name);
+    return qCond->wait(lockedMutex->getMutex());
+    //WaitingLogger::getInstance()->removeWaiting(threadName,name);
 }
 
 void OWaitCondition::wakeOne() {
-
+    qCond->wakeOne();
 }
 
 void OWaitCondition::wakeAll() {
-    //TODO
+    qCond->wakeAll();
 }
 
