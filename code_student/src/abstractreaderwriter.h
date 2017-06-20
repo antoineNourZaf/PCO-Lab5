@@ -7,12 +7,11 @@
  *
  * @file abstractreaderwriter.h
  *
- * Cette classe définit les lecteurs-rédacteurs utilisés dans les threads. Ils héritent tous de la classe AbstractReaderWriter,
+ * Cette classe déclare les lecteurs-rédacteurs utilisés dans les threads. Ils héritent tous de la classe AbstractReaderWriter,
  * pour redéfinir les méthodes lock/unlock-reading/writing. Chacune de ces quatre méthodes sera implémentée dans les fichiers
  * rwHoare/Mesa/Semaphore.cpp selon deux priorités : égale entre lecteurs et redacteurs ainsi que priorité aux rédacteurs.
  *
  */
-
 #ifndef ABSTRACTREADERWRITER_H
 #define ABSTRACTREADERWRITER_H
 
@@ -23,6 +22,8 @@
 
 /**
  * @brief The AbstractReaderWriter class, mêre de tous les lecteurs-redacteurs
+ * Les définitions des méthodes vont toutes appeller les méthodes de logging et de controle du processus
+ * (add/remove-RessourceAcces() ainsi que pause()
  */
 class AbstractReaderWriter {
 public:
@@ -62,14 +63,22 @@ public:
 class ReaderWriterSemaphoreEqualPrio : public AbstractReaderWriter {
 protected:
     int nbReader;
-    OSemaphore* mutex; // accès à la nbReaders
+    OSemaphore* mutex; // accès à la variable nbReaders
     OSemaphore* fifo; // file d'attente pour tout le monde
     OSemaphore* writer; // le premier lecteur bloque les rédacteurs ET un rédacteur bloque tt le monde
 
 public:
-
+    /**
+     * @brief ReaderWriterSemaphoreEqualPrio ctor
+     * va initialiser les variables comme vu en cours
+     */
     ReaderWriterSemaphoreEqualPrio();
+
+    /**
+     * @brief ~ReaderWriterSemaphoreEqualPrio dtor
+     */
     virtual ~ReaderWriterSemaphoreEqualPrio();
+
     virtual void lockReading(const QString& name);
     virtual void lockWriting(const QString& name);
     virtual void unlockReading(const QString& name);
@@ -86,11 +95,11 @@ public:
  */
 class RWSemaphorePrioWriter : public AbstractReaderWriter {
 protected:
-    OSemaphore* mutexReaders;
-    OSemaphore* mutexWriters;
-    OSemaphore* writer;
-    OSemaphore* reader;
-    OSemaphore* mutex;
+    OSemaphore* mutexReaders; // pour les lecteurs
+    OSemaphore* mutexWriters; // pour nbWriters
+    OSemaphore* writer; // bloquer les rédacteurs
+    OSemaphore* reader; // bloquer les lecteurs et rédacteurs
+    OSemaphore* mutex; // pour nbReaders
     int nbReaders, nbWriters;
 
 public:
@@ -105,10 +114,11 @@ public:
 
 /**
  * @brief The ReaderWriterHoarWritersPrio class
+ * implémentation par moniteur de Hoare, avec une priorité pour les rédacteurs
  */
 class ReaderWriterHoareWritersPrio : public AbstractReaderWriter, public OHoareMonitor {
 protected:
-    Condition waitWriting;
+    Condition waitWriting; //
     Condition waitReading;
     int nbReaders;
     bool writingInProgress;

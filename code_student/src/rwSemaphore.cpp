@@ -8,7 +8,7 @@
  * @file rwSemaphore.cpp
  *
  * Ce fichier définit les lecteurs-redacteurs implémentés par des sémaphores,
- * avec deux priorités
+ * avec deux priorités.
  */
 #include "abstractreaderwriter.h"
 #include <iostream>
@@ -29,15 +29,18 @@ ReaderWriterSemaphoreEqualPrio::~ReaderWriterSemaphoreEqualPrio() {
 
 void ReaderWriterSemaphoreEqualPrio::lockReading(const QString& threadName) {
     SynchroController::getInstance()->pause();
+
     // le premier lecteur va vérouiller
     fifo->acquire(threadName);
     mutex->acquire(threadName);
 
     nbReader++;
-    if (nbReader == 1) {
-        writer->acquire(threadName); // bloquer les rédacteurs
+    if (nbReader == 1) { // le premier lecteur va bloquer la rédaction
+        writer->acquire(threadName);
     }
+
     ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
+
     mutex->release();
     fifo->release(); // le suivant dans la fifo pourra tenter sa chance
 }

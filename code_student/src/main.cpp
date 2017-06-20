@@ -5,6 +5,8 @@
  * @author Camilo PINEDA SERNA
  * @author Emmanuel SCHMID
  *
+ * @file main.cpp
+ *
  * Voici notre implementation du laboratoire :
  *
  * Le but est d'avoir divers treads qui implémentent différents protocoles de lecteurs-redacteurs.
