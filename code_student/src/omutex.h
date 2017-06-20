@@ -19,8 +19,9 @@
 
 class OMutex {
 private:
-    const QString name = "Mutex";
+    const QString name;
     QMutex* mutex;
+    static int compteur;
 
 public:
 

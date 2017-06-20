@@ -2,9 +2,12 @@
 #include "waitinglogger.h"
 #include <iostream>
 
-OMutex::OMutex() : mutex(new QMutex())
+int OMutex::compteur=0;
+
+OMutex::OMutex() : mutex(new QMutex()),name("Mutex" + QString::number(compteur))
 {
     WaitingLogger::getInstance()->creatQueueObject(this->name);
+    compteur++;
 }
 
 OMutex::~OMutex(){
@@ -17,7 +20,7 @@ void OMutex::lock(const QString& threadName){
     if(!tryLock()){
         WaitingLogger::getInstance()->addWaiting(threadName,name);
         mutex->lock();
-        WaitingLogger::getInstance()->removeWaiting(threadName,name); //IL L'A TRAITER DONC PLUS DANS LA FILE
+        WaitingLogger::getInstance()->removeWaiting(threadName,name);
     }
 }
 

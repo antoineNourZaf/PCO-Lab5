@@ -32,7 +32,11 @@ OHoareMonitor::~OHoareMonitor() {
 }
 
 void OHoareMonitor::monitorIn(const QString& threadName) {
-    monitorMutex->acquire(threadName);
+    if(!monitorMutex->tryAcquire()){
+        WaitingLogger::getInstance()->addWaiting(threadName,name);
+        monitorMutex->acquire(threadName);
+        WaitingLogger::getInstance()->removeWaiting(threadName,name);
+    }
 }
 
 
@@ -55,7 +59,11 @@ void OHoareMonitor::wait(Condition &cond, const QString& threadName) {
         monitorMutex->release();
     }
     WaitingLogger::getInstance()->removeWaiting(threadName,name);
-    cond.waitingSem->acquire(threadName);
+    if(!cond.waitingSem->tryAcquire()){
+        WaitingLogger::getInstance()->addWaiting(threadName,name);
+        cond.waitingSem->acquire(threadName);
+        WaitingLogger::getInstance()->removeWaiting(threadName,name);
+    }
     cond.nbWaiting--;
 }
 
