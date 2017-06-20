@@ -7,25 +7,11 @@
  *
  * @file mythread.h
  *
- * Voici notre implementation du laboratoire :
+ * Cette classe va être instanciée plusieurs fois, une par lecteur et rédacteur qui seront en concurrence pour la ressource partagée.
+ * Ils contieennent un pointeur sur un AbstractReaderWriter, qui seront en vrai une des dérivations de cette classe abstraite
+ * par exemple implémentation avec HOARE et priorité égale).
  *
- * Le but est d'avoir divers treads qui implémentent différents protocoles de lecteurs-redacteurs.
- * Nous avons voulu implémenter une version avec priorité aux rédacteurs
- * et une avec priorité égale pour les lecteurs comme pour les rédacteurs.
- *
- * Chacun de ses protocoles peut être implémenté grâce à différents objets de synchronisation :
- * Sémpahores, moniteur de Hoare et moniteur de Mesa.
- *
- * La classe AbstractReaderWriter va être dérivée pour chacun des protocoles implémenté avec chacun des objets de synchronisation.
- * Dans cette dernière sont définits tous les protocoles (comme ReaderWriterSemaphoreEqualPrio).
- * Leur implémentation est dans le fichier readerwriter.cpp
- *
- * Nous devons également "wrapper" les objets de synchronisation offerts par le langage.
- * Ainsi, QSemaphore, QMutex et QWaitCondition deviennent OSemaphore, OMutex et OWaitCondition.
- * Ces derniers vont être monitorés, c'est-à-dire qu'en plus de fonctionner comme objets de synchronisation
- * ils permettront d'afficher des messages et d'interagir avec l'utilisateur.
- * Cette interaction et monitoring se fait grâce aux classes WaitingLogger et SynchroController.
- *
+ * MyThread est dérivée deux fois, une pour les lecteurs, une pour les rédacteurs.
  */
 #ifndef MYTHREAD_H
 #define MYTHREAD_H
@@ -37,25 +23,27 @@
 class MyThread : public QThread {
 protected:
     AbstractReaderWriter *readerWriter;
-    static int compteur;
+    static int compteur; // pour numéroter les threads
 
 public:
-
     MyThread(AbstractReaderWriter *protocole);
 
 };
 
-
+/**
+ * @brief The ReaderThread class pour les threads de lecture
+ */
 class ReaderThread : public MyThread {
 public:
-
     ReaderThread(AbstractReaderWriter* protcole);
     void run();
 };
 
+/**
+ * @brief The WriterThread class pour les threads d'écriture
+ */
 class WriterThread : public MyThread {
 public:
-
     WriterThread(AbstractReaderWriter* protcole);
     void run();
 };

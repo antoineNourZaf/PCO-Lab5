@@ -8,7 +8,7 @@
  * @file ohoaremonitor.h
  *
  * Cette classe déclare un moniteur de Hoare,
- * cependant les méhtode de synchronisation vont permettre le monitoring du processus
+ * cependant les méhtodes de synchronisation vont permettre le monitoring du processus
  * Ces méthodes prennent alors le nom du thread qui les appelle.
  *
  */
