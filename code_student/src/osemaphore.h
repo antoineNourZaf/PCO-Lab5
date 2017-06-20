@@ -7,7 +7,6 @@
 class OSemaphore {
 private:
     static int compteur;
-    int nbSlotFree;
     const QString name;
     QSemaphore *semaphore;
     const int nbPermission;

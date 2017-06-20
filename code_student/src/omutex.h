@@ -9,7 +9,6 @@ class OMutex {
 private:
     const QString name = "Mutex";
     QMutex mutex;
-    bool slotFree;
 
 public:
 
