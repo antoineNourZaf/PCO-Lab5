@@ -15,7 +15,7 @@ public:
     OWaitCondition();
     ~OWaitCondition();
 
-    bool wait(OMutex *lockedMutex);
+    bool wait(OMutex *lockedMutex,const QString& threadName);
 
     void wakeAll();
 

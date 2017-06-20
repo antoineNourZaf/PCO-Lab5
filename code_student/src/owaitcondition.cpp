@@ -13,12 +13,13 @@ OWaitCondition::~OWaitCondition(){
      WaitingLogger::getInstance()->rmQueueObject(this->name);
 }
 
-bool OWaitCondition::wait(OMutex *lockedMutex) {
+bool OWaitCondition::wait(OMutex *lockedMutex,const QString& threadName) {
     if (lockedMutex == nullptr)
         return false;
-    //WaitingLogger::getInstance()->addWaiting(threadName,name);
-    return qCond->wait(lockedMutex->getMutex());
-    //WaitingLogger::getInstance()->removeWaiting(threadName,name);
+    WaitingLogger::getInstance()->addWaiting(threadName,name);
+    bool status = qCond->wait(lockedMutex->getMutex());
+    WaitingLogger::getInstance()->removeWaiting(threadName,name);
+    return status;
 }
 
 void OWaitCondition::wakeOne() {
