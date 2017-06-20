@@ -1,3 +1,15 @@
+/**
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * @file waitinglogger.cpp
+ *
+ * Ce fichier définit les lecteurs-redacteurs implémentés par des sémaphores,
+ * avec deux priorités.
+ */
 #include "waitinglogger.h"
 #include <iostream>
 #include <stdlib.h>
