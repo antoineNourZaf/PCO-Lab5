@@ -13,7 +13,7 @@ void RWMesaEqualPrio::lockReading(const QString& threadName){
 
     mutex->lock(threadName);
     if(writingInProgress)
-        condFIFO->wait(mutex);
+        condFIFO->wait(mutex,threadName);
     nbReaders++;
     ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
     mutex->unlock();
@@ -22,11 +22,11 @@ void RWMesaEqualPrio::lockReading(const QString& threadName){
 void RWMesaEqualPrio::unlockReading(const QString& threadName){
     SynchroController::getInstance()->pause();
     mutex->lock(threadName);
+    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
     nbReaders--;
     if(nbReaders == 0){
         condFIFO->wakeOne();
     }
-    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
     mutex->unlock();
 }
 
@@ -34,18 +34,18 @@ void RWMesaEqualPrio::lockWriting(const QString& threadName){
     SynchroController::getInstance()->pause();
     mutex->lock(threadName);
     if(nbReaders > 0 || writingInProgress)
-        condFIFO->wait(mutex);
+        condFIFO->wait(mutex,threadName);
     writingInProgress = true;
-    ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
     mutex->unlock();
+    ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
 }
 
 void RWMesaEqualPrio::unlockWriting(const QString& threadName){
     SynchroController::getInstance()->pause();
     mutex->lock(threadName);
     writingInProgress = false;
-    condFIFO->wakeOne();
     ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
+    condFIFO->wakeOne();
     mutex->unlock();
 }
 
