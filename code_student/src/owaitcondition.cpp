@@ -1,3 +1,16 @@
+/**
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * @file owaitcondition.cpp
+ *
+ * ce fichier définit la classe OWaitCondition.
+ * Les méthodes font appelle aux méthodes du singleton WaitingLogger
+ *
+ */
 #include "owaitcondition.h"
 
 int OWaitCondition::compteur=0;

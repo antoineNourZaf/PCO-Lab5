@@ -7,8 +7,8 @@
  *
  * @file waitinglogger.cpp
  *
- * Ce fichier définit les lecteurs-redacteurs implémentés par des sémaphores,
- * avec deux priorités.
+ * Ce fichier définit les classes de logging, les méthodes de création/suppression/mise à jour des queues
+ * et d'ajout/retrait des threads ayant accès à la RC.
  */
 #include "waitinglogger.h"
 #include <iostream>

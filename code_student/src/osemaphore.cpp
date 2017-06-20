@@ -1,3 +1,15 @@
+/**
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * @file osemaphore.cpp
+ *
+ * Ce fichier définit la classe OSemaphore
+ *
+ */
 #include "osemaphore.h"
 #include "mythread.h"
 #include <iostream>
