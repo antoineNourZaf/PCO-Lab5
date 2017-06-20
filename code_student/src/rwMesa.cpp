@@ -53,9 +53,9 @@ void RWMesaEqualPrio::unlockWriting(const QString& threadName){
  *  MESA pririté reader
  * ----------------------*/
 RWMesaWritersPrio::RWMesaWritersPrio() :
-    mutex(new OMutex()),
-    waitReading(new OWaitCondition()),
     waitWriting(new OWaitCondition()),
+    waitReading(new OWaitCondition()),
+    mutex(new OMutex()),
     nbReaders(0), nbWaitingReaders(0), nbWaitingWriters(0), writingInProgress(false){
 
 }

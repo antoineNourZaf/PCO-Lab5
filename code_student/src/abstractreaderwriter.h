@@ -59,10 +59,10 @@ public:
 // ***************************************************
 
 /**
- * @brief The ReaderWriterSemaphoreEqualPrio class
+ * @brief The RWSemaphoreEqualPrio class
  * implémentation par sémaphore, avec une priorité égale pour les lecteurs comme pour les rédacteurs.
  */
-class ReaderWriterSemaphoreEqualPrio : public AbstractReaderWriter {
+class RWSemaphoreEqualPrio : public AbstractReaderWriter {
 protected:
     int nbReader;
     OSemaphore* mutex; // accès à la variable nbReaders
@@ -71,15 +71,15 @@ protected:
 
 public:
     /**
-     * @brief ReaderWriterSemaphoreEqualPrio ctor
+     * @brief RWSemaphoreEqualPrio ctor
      * va initialiser les variables comme vu en cours
      */
-    ReaderWriterSemaphoreEqualPrio();
+    RWSemaphoreEqualPrio();
 
     /**
-     * @brief ~ReaderWriterSemaphoreEqualPrio dtor
+     * @brief ~RWSemaphoreEqualPrio dtor
      */
-    virtual ~ReaderWriterSemaphoreEqualPrio();
+    virtual ~RWSemaphoreEqualPrio();
 
     virtual void lockReading(const QString& name);
     virtual void lockWriting(const QString& name);

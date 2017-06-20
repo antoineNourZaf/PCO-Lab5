@@ -16,7 +16,7 @@
 
 int OSemaphore::compteur=0;
 
-OSemaphore::OSemaphore(int n):name("Semaphore" + QString::number(compteur)),semaphore(new QSemaphore(n)), nbPermission(n)
+OSemaphore::OSemaphore(int n): semaphore(new QSemaphore(n)),nbPermission(n),name("Semaphore" + QString::number(compteur))
 {
     compteur++;
     WaitingLogger::getInstance()->creatQueueObject(this->name);

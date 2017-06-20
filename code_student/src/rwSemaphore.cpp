@@ -17,17 +17,17 @@
  * Priorité égale
  *********************************************************/
 
-ReaderWriterSemaphoreEqualPrio::ReaderWriterSemaphoreEqualPrio(): nbReader(0), mutex(new OSemaphore(1)),fifo(new OSemaphore(1)),writer(new OSemaphore(1)){
+RWSemaphoreEqualPrio::RWSemaphoreEqualPrio(): nbReader(0), mutex(new OSemaphore(1)),fifo(new OSemaphore(1)),writer(new OSemaphore(1)){
 
 }
 
-ReaderWriterSemaphoreEqualPrio::~ReaderWriterSemaphoreEqualPrio() {
+RWSemaphoreEqualPrio::~RWSemaphoreEqualPrio() {
     delete writer;
     delete fifo;
     delete mutex;
 }
 
-void ReaderWriterSemaphoreEqualPrio::lockReading(const QString& threadName) {
+void RWSemaphoreEqualPrio::lockReading(const QString& threadName) {
     SynchroController::getInstance()->pause();
 
     // le premier lecteur va vérouiller
@@ -45,7 +45,7 @@ void ReaderWriterSemaphoreEqualPrio::lockReading(const QString& threadName) {
     fifo->release(); // le suivant dans la fifo pourra tenter sa chance
 }
 
-void ReaderWriterSemaphoreEqualPrio::unlockReading(const QString& threadName) {
+void RWSemaphoreEqualPrio::unlockReading(const QString& threadName) {
     SynchroController::getInstance()->pause();
     mutex->acquire(threadName);
     //Fin accès ressources
@@ -57,7 +57,7 @@ void ReaderWriterSemaphoreEqualPrio::unlockReading(const QString& threadName) {
     mutex->release();
 }
 
-void ReaderWriterSemaphoreEqualPrio::lockWriting(const QString& threadName) {
+void RWSemaphoreEqualPrio::lockWriting(const QString& threadName) {
     SynchroController::getInstance()->pause();
     fifo->acquire(threadName); // le redacteur va bloquer tout ceux qui attendent dans la file
     writer->acquire(threadName);
@@ -65,7 +65,7 @@ void ReaderWriterSemaphoreEqualPrio::lockWriting(const QString& threadName) {
     ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
 }
 
-void ReaderWriterSemaphoreEqualPrio::unlockWriting(const QString& threadName) {
+void RWSemaphoreEqualPrio::unlockWriting(const QString& threadName) {
     SynchroController::getInstance()->pause();
     //Fin accès ressources
     ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
@@ -82,11 +82,11 @@ RWSemaphorePrioWriter::RWSemaphorePrioWriter(): mutexReaders(new OSemaphore(1)),
     writer(new OSemaphore(1)), reader(new OSemaphore(1)), mutex(new OSemaphore(1)), nbReaders(0), nbWriters(0){}
 
 RWSemaphorePrioWriter::~RWSemaphorePrioWriter() {
-        delete mutexReaders;
-        delete mutexWriters;
-        delete writer;
-        delete reader;
-        delete mutex;
+    delete mutexReaders;
+    delete mutexWriters;
+    delete writer;
+    delete reader;
+    delete mutex;
 }
 
 void RWSemaphorePrioWriter::lockReading(const QString& threadName) {

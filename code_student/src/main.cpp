@@ -60,7 +60,7 @@ void killThreads(ReaderThread** readers, WriterThread** writers){
 int main(int argc, char *argv[])
 {
     // Create the resource manager object
-    AbstractReaderWriter *protocoleSema = new RWHoareWritersPrio();
+    AbstractReaderWriter *protocoleSema = new RWSemaphorePrioWriter();
 
     // Create & start the threads
     ReaderThread *readers[NB_READER];

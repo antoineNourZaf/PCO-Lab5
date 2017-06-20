@@ -15,7 +15,7 @@
 
 int OMutex::compteur=0;
 
-OMutex::OMutex() : mutex(new QMutex()),name("Mutex" + QString::number(compteur))
+OMutex::OMutex() : name("Mutex" + QString::number(compteur)), mutex(new QMutex())
 {
     WaitingLogger::getInstance()->creatQueueObject(this->name);
     compteur++;

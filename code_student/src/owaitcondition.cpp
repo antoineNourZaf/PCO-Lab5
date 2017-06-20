@@ -23,7 +23,7 @@ OWaitCondition::OWaitCondition() : qCond(new QWaitCondition()), name("WaitCondit
 
 OWaitCondition::~OWaitCondition(){
     delete qCond;
-     WaitingLogger::getInstance()->rmQueueObject(this->name);
+    WaitingLogger::getInstance()->rmQueueObject(this->name);
 }
 
 bool OWaitCondition::wait(OMutex *lockedMutex,const QString& threadName) {
