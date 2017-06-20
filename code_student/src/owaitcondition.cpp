@@ -7,7 +7,7 @@
  *
  * @file owaitcondition.cpp
  *
- * ce fichier définit la classe OWaitCondition.
+ * Ce fichier définit la classe OWaitCondition.
  * Les méthodes font appelle aux méthodes du singleton WaitingLogger
  *
  */
@@ -27,8 +27,10 @@ OWaitCondition::~OWaitCondition(){
 }
 
 bool OWaitCondition::wait(OMutex *lockedMutex,const QString& threadName) {
+    /* Si le mutex en paramètre est null inutile d'aller plus loin */
     if (lockedMutex == nullptr)
         return false;
+
     WaitingLogger::getInstance()->addWaiting(threadName,name);
     bool status = qCond->wait(lockedMutex->getMutex());
     WaitingLogger::getInstance()->removeWaiting(threadName,name);

@@ -24,10 +24,10 @@ SynchroController *SynchroController::getInstance()
 
 void SynchroController::pause()
 {
-    semaphore->acquire();
+    semaphore->acquire(); // Suffisant pour stoper thread
 }
 
 void SynchroController::resume()
 {
-    semaphore->release();
+    semaphore->release(); // Suffisant pour débloquer thread
 }

@@ -17,24 +17,47 @@
 #include <QSemaphore>
 #include "waitinglogger.h"
 
+/*------------------------------------------------------------------------------
+ * Class OSemaphore permettant le monitoring de sa file d'attente
+ * Remarque: Implémenter à l'aide QSemaphore
+ *------------------------------------------------------------------------------*/
 class OSemaphore {
 private:
-    static int compteur;
-    const QString name;
     QSemaphore *semaphore;
     const int nbPermission;
+    static int compteur;     //Permet de fournir un nom unique
+    const QString name;      //Nom de l'objet : MutexX, X : numéro attributé
 
 public:
+    /*------------------------------------------------------------------------------
+     * Constructeur : Instancie Qsemaphore, attribution d'un nom et création d'une
+     *                file d'attente dans le WaitingLogger.
+     *------------------------------------------------------------------------------*/
     OSemaphore(int n = 0);
+
+    /*------------------------------------------------------------------------------
+     * Destructeur : Supprimer en mémoire le Qsemaphore ainsi que supprime la file
+     *               d'attente dans le WaitingLogger.
+     *------------------------------------------------------------------------------*/
     ~OSemaphore();
 
-    /**
-     * @brief acquire comme pour QSemaphore, mais loggue l'action
-     * grâce aux methodes de WaitingLogger
-     * @param threadName
-     */
+    /*------------------------------------------------------------------------------
+     * But : Acquire comme pour QSemaphore, mais loggue l'action grâce aux methodes
+     *       de WaitingLogger.
+     * Paramètre : threadName - nom du thread qui effectue la demande
+     *------------------------------------------------------------------------------*/
     void acquire(const QString & threadName);
+
+    /*------------------------------------------------------------------------------
+     * But : relase comme pour QSemaphore.
+     * Remarque : Ici, aucun log n'est nécessaire. (pas de file d'attente)
+     *------------------------------------------------------------------------------*/
     void release();
+
+    /*------------------------------------------------------------------------------
+     * But : tryAcquire comme pour QSemaphore.
+     * Remarque : Ici, aucun log n'est nécessaire. (pas de file d'attente)
+     *------------------------------------------------------------------------------*/
     bool tryAcquire();
 
 };

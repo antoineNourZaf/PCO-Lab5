@@ -17,14 +17,18 @@
 
 #include "osemaphore.h"
 
+/*------------------------------------------------------------------------------
+ * Class OHoareMonitor permettant le monitoring des divers files d'attentes
+ * Remarque: Implémenter à l'aide d'objet implemnté par nos soins (Osemaphore)
+ *------------------------------------------------------------------------------*/
 class OHoareMonitor
 {
 private:
-    const QString name;
     OSemaphore* monitorMutex;
     OSemaphore* monitorSignal;
     int monitorNbSignal;
-    static int compteur;
+    const QString name;         //Nom de l'objet : HoareX
+    static int compteur;        //Permet de fournir un nom unique
 protected:
 
     class Condition {
@@ -37,7 +41,15 @@ protected:
     };
 
 public:
+    /*------------------------------------------------------------------------------
+     * Constructeur : Instancier les objets, attribution d'un nom et création d'une
+     *                file d'attente dans le WaitingLogger.
+     *------------------------------------------------------------------------------*/
     OHoareMonitor();
+    /*------------------------------------------------------------------------------
+     * Destructeur : Supprimer les instanciations des divers objets ainsi que supprime
+     *               la file d'attente dans le WaitingLogger
+     *------------------------------------------------------------------------------*/
     ~OHoareMonitor();
 
     /**

@@ -19,28 +19,40 @@
 #include <QThread>
 #include "abstractreaderwriter.h"
 
+/*------------------------------------------------------------------------------
+ * Class MyThread herite de QThread
+ * Remarque: Cette classe n'est jamais instancié, elle permet l'héritage d'autre
+ *           classe (ReaderThread, WriterThread)
+ *------------------------------------------------------------------------------*/
 class MyThread : public QThread {
 protected:
+    /* Tout les threads doivent avoir un protocole : paradigme Lecteur-Redacteur */
     AbstractReaderWriter *readerWriter;
-    static int compteur; // pour numéroter les threads
+    static int compteur; //Permet de fournir au thread un nom unique
 
 public:
+    /*------------------------------------------------------------------------------
+     * But : Constructeur
+     * Remarque: Ce super-constructeur est appelé lors de chaque instanciation de
+     *           thread, puisque tout les threads doivent possèder un protocole.
+     *------------------------------------------------------------------------------*/
     MyThread(AbstractReaderWriter *protocole);
-
 };
 
-/**
- * @brief The ReaderThread class pour les threads de lecture
- */
+/*------------------------------------------------------------------------------
+ * Class ReaderThread herite de MyThread
+ * Remarque: Ces threads représent les lecteurs (consulation d'une donnée)
+ *------------------------------------------------------------------------------*/
 class ReaderThread : public MyThread {
 public:
     ReaderThread(AbstractReaderWriter* protcole);
     void run();
 };
 
-/**
- * @brief The WriterThread class pour les threads d'écriture
- */
+/*------------------------------------------------------------------------------
+ * Class WriterThread herite de MyThread
+ * Remarque: Ces threads représent les redacteurs (enregistrement d'une donnée)
+ *------------------------------------------------------------------------------*/
 class WriterThread : public MyThread {
 public:
     WriterThread(AbstractReaderWriter* protcole);

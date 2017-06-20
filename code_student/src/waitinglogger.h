@@ -43,18 +43,35 @@ public:
      */
     static WaitingLogger *getInstance();
 
-
+    /*------------------------------------------------------------------------------
+     * But : Ajouter un thread dans la file d'attente d'un objet
+     *------------------------------------------------------------------------------*/
     void addWaiting(const QString& threadName,const QString& objectName);
 
+    /*------------------------------------------------------------------------------
+     * But : Supprimer un thread dans la file d'attente d'un objet
+     *------------------------------------------------------------------------------*/
     void removeWaiting(const QString& threadName,const QString& objectName);
 
+    /*------------------------------------------------------------------------------
+     * But : Creer une file d'attente pour un objet de sycnhronisation.
+     * Remarque : Utilisé dans les constructeur des objets de synchro
+     *------------------------------------------------------------------------------*/
     void creatQueueObject(const QString& objectName);
+    /*------------------------------------------------------------------------------
+     * But : Supprimer une file d'attente pour un objet de sycnhronisation
+     * Remarque : Utilisé dans les destructeurs des objets de synchro
+     *------------------------------------------------------------------------------*/
     void rmQueueObject(const QString& objectName);
 
 
 protected:
     WaitingLogger();
 
+    /*------------------------------------------------------------------------------
+     * But : Obtenir la liste des files d'attentes
+     * Remarque : Ne peut pas être modifié
+     *------------------------------------------------------------------------------*/
     QList<WaitingQueue *> getQueues() const;
 
     /**
@@ -65,7 +82,7 @@ protected:
      */
     virtual void updateView() = 0;
 
-    QList<WaitingQueue *> queues;
+    QList<WaitingQueue *> queues; //Attributs accésible depuis classe fille.
 
 };
 

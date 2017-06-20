@@ -24,14 +24,16 @@ OSemaphore::OSemaphore(int n):name("Semaphore" + QString::number(compteur)),sema
 
 OSemaphore::~OSemaphore(){
     delete semaphore;
-     WaitingLogger::getInstance()->rmQueueObject(this->name);
+    WaitingLogger::getInstance()->rmQueueObject(this->name);
 }
 
-
 void OSemaphore::acquire(const QString& threadName){
+    /* Si on arrive pas à acquire, alors il y a une file d'attente */
     if(!tryAcquire()){
         WaitingLogger::getInstance()->addWaiting(threadName,name);
         semaphore->acquire();
+        /* Une fois passé le acquire, le thread ne se trouve plus dans
+           la file d'attente */
         WaitingLogger::getInstance()->removeWaiting(threadName,name);
     }
 }

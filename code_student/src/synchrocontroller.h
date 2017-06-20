@@ -9,9 +9,11 @@
  *
  * Cette classe assure le contrôle du flux du processus.
  * Elle permet de pauser l'exécution du programme et de la continuer,
- * en se basant sur une sémpahore.
+ * en se basant sur une sémpahore. C'est la sémaphore qui mets en pause
+ * les threads !
  *
  */
+
 #ifndef SYNCHROCONTROLLER_H
 #define SYNCHROCONTROLLER_H
 

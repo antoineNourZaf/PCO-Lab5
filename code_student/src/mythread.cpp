@@ -7,11 +7,9 @@
  *
  * @file mythread.cpp
  *
- * ce fichier définit les classes MyThread et ses deux dérivés de lecture et d'écriture
- * L'action des threads sera
- * d'accéder à la ressource (en lecture ou écriture) puis
- * d'attendre quelques secondes (entre 0 et 5), puis
- * de quitter la ressource.
+ * Ce fichier définit les classes MyThread et ses deux dérivés de lecture et d'écriture
+ * L'action des threads sera d'accéder à la ressource (en lecture ou écriture) puis
+ * d'attendre quelques secondes (entre 0 et 5), puis de quitter la ressource.
  *
  */
 
@@ -22,7 +20,9 @@ using namespace std;
 
 int MyThread::compteur = 0;
 
-
+/*-------------------------------------------------
+ * Implémentation MyThread
+ * ------------------------------------------------*/
 
 MyThread::MyThread( AbstractReaderWriter *protocole)
 {
@@ -30,36 +30,37 @@ MyThread::MyThread( AbstractReaderWriter *protocole)
     compteur++;
 }
 
-
-
+/*-------------------------------------------------
+ * Implémentation ReaderThread
+ * ------------------------------------------------*/
 ReaderThread::ReaderThread(AbstractReaderWriter* protocole) : MyThread(protocole) {
     QThread::setObjectName("Reader" + QString::number(compteur));
 }
 
 void ReaderThread::run() {
-    int nbtour = 3;
     while (true) {
         readerWriter->lockReading(QThread::objectName());
         cout << "Task " << objectName().toStdString() << endl;
+        /* Permet de mettre en attente le threads un petit instant */
         usleep((int)((float)50000*rand()/(RAND_MAX+1.0)));
         readerWriter->unlockReading(QThread::objectName());
-        nbtour--;
     }
 }
 
-
+/*-------------------------------------------------
+ * Implémentation WriterThread
+ * ------------------------------------------------*/
 
 WriterThread::WriterThread(AbstractReaderWriter* protocole) : MyThread(protocole) {
     QThread::setObjectName("Writer" + QString::number(compteur));
 }
 
 void WriterThread::run() {
-    int nbtour = 3;
     while (true) {
         readerWriter->lockWriting(QThread::objectName());
         cout << "Task " << objectName().toStdString() << endl;
+        /* Permet de mettre en attente le threads un petit instant */
         usleep((int)((float)50000*rand()/(RAND_MAX+1.0)));
         readerWriter->unlockWriting(QThread::objectName());
-        nbtour--;
     }
 }

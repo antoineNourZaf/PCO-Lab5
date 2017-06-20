@@ -29,67 +29,66 @@
  */
 #include <QApplication>
 #include <iostream>
-
 #include "mythread.h"
 
-#define NB_READER 1
-#define NB_WRITER 20
+/* Constantes permettant de fixer le nombre de threads reader et writer */
+#define NB_READER 15
+#define NB_WRITER 10
 
 using namespace std;
 
-// Kill the threads
+/*------------------------------------------------------------------------------
+ * But: Arrêt les threads en cours d'exécution
+ * Remarque: Les threads sont arreté d'une façon un peu brute
+ * Paramètres : 2 tableaux de pointeurs contenant les différents threads (reader,
+ *              et writer)
+ *------------------------------------------------------------------------------*/
 void killThreads(ReaderThread** readers, WriterThread** writers){
     for (int i = 0; i < NB_READER; ++i) {
-        //a little bit violent but it's fine
         readers[i]->terminate();
     }
-
     for (int i = 0; i < NB_WRITER; ++i) {
         writers[i]->terminate();
     }
 }
 
+/*------------------------------------------------------------------------------
+ * But: Création, Exécution et contrôles des différents threads
+ * Remarque: Afin de pouvoir tester les implémentations, il faut décommenter la
+ *           ligne souhaité.
+ *------------------------------------------------------------------------------*/
 int main(int argc, char *argv[])
 {
-    ReaderThread *readers[NB_READER];
-    WriterThread *writers[NB_WRITER];
-
     // Create the resource manager object
     AbstractReaderWriter *protocoleSema = new RWHoareWritersPrio();
 
     // Create & start the threads
-    //Readers
+    ReaderThread *readers[NB_READER];
+    WriterThread *writers[NB_WRITER];
+
+    // Readers
     for (int t = 0; t < NB_READER; t++) {
         readers[t] = new ReaderThread(protocoleSema);
         readers[t]->start();
     }
-    //Writers
+    // Writers
     for (int t = 0; t < NB_WRITER; t++) {
         writers[t] = new WriterThread(protocoleSema);
         writers[t]->start();
     }
 
     bool continuing = true;
-    cout << "Start monitoring "<<endl;
+    cout << "Start monitoring : <Enter> to continue, <q> or <esc> to exit" << endl;
     while (continuing) {
         char input = cin.get();
         if(input == '\n'){
-            SynchroController::getInstance()->resume(); 
-        } else if (input == 'q' || input == 'Q' || input == 27) { // If key was <esc>
+            SynchroController::getInstance()->resume(); //Debloque le thread
+        } else if (input == 'q' || input == 'Q' || input == 27) { // If key was <q>, <Q> or <esc>
             cout << "Exit the monitoring programme ! " << endl;
             killThreads(readers, writers);
             continuing = false;
         }
         cin.clear();
-    }
-
-    /* Attente de la fin de l'exécution des différents threads */
-    for (int t = 0; t < NB_READER; t++) {
-        readers[t]->wait();
-    }
-
-    for(int t = 0; t < NB_WRITER; t++) {
-        writers[t]->wait();
     }
 
     return 0;
