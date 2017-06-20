@@ -1,3 +1,22 @@
+/**
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * @file waitinglogger.h
+ *
+ * Ces classes permetent de monitorer le processus et ses threads.
+ * Une permière classe WaitingQueue contiendra une queue des threads
+ * en attente sur un objet de synchronisation.
+ *
+ * La classe WaitingLogger est un singleton et contient la liste
+ * de toutes les queues d'attente (WaitingQueue), et déclarera la méthode updateView()
+ * Cette dernière est définie dans les classe dérivant WaitingLogger,
+ * par exemple pour un affichage en console.
+ *
+ */
 #ifndef WAITINGLOGGER_H
 #define WAITINGLOGGER_H
 
@@ -50,6 +69,7 @@ protected:
 
 };
 
+
 class ReadWriteLogger : public WaitingLogger
 {
     friend WaitingLogger;
@@ -58,7 +78,16 @@ public:
 
     QStringList getResourceAccesses() const;
 
+    /**
+     * @brief addResourceAccess ajoute le thread à la liste de ceux ayant accès à la ressource critique
+     * @param threadName le nom du thread
+     */
     void addResourceAccess(const QString &threadName);
+
+    /**
+     * @brief removeResourceAccess retire le thread de la liste de ceux ayant accès à la RC
+     * @param threadName le nom du thread
+     */
     void removeResourceAccess(const QString &threadName);
 
 protected:
@@ -73,7 +102,7 @@ protected:
      */
     virtual void updateView();
 
-    QStringList resourceAccesses;
+    QStringList resourceAccesses; // la liste de ceux qui ont accès à la RC
 
 };
 

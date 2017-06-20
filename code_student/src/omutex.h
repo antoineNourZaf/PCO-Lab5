@@ -7,7 +7,7 @@
  *
  * @file omutex.h
  *
- * Ce fichier définit le classe omutex.
+ * Ce fichier déclare le classe omutex.
  * Cet objet de synchronisation sera augmenté de méthodes de logging (add/remove-RessourceAcces)
  *
  */
@@ -28,6 +28,12 @@ public:
     OMutex();
     ~OMutex();
     QMutex* getMutex();
+
+    /**
+     * @brief lock comme pour Qmutex lock(), mais fait appel aux
+     * méthodes de WaitingLogger pour logguer
+     * @param threadName
+     */
     void lock(const QString& threadName);
     bool tryLock();
     void unlock();

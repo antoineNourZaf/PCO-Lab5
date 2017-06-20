@@ -1,3 +1,15 @@
+/**
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * @file waitinglogger.cpp
+ *
+ * Ce fichier définit les classes de logging, les méthodes de création/suppression/mise à jour des queues
+ * et d'ajout/retrait des threads ayant accès à la RC.
+ */
 #include "waitinglogger.h"
 #include <iostream>
 #include <stdlib.h>
