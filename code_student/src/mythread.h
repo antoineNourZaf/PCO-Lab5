@@ -18,7 +18,6 @@
 
 #include <QThread>
 #include "abstractreaderwriter.h"
-#include "synchrocontroller.h"
 
 class MyThread : public QThread {
 protected:
