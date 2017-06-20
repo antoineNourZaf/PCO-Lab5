@@ -23,12 +23,14 @@ OHoareMonitor::Condition::Condition() :
 OHoareMonitor::OHoareMonitor() :
     monitorMutex(new OSemaphore(1)), monitorSignal(new OSemaphore(0)), monitorNbSignal(0), name("HoareMonitor" + QString::number(compteur))
 {
+    WaitingLogger::getInstance()->creatQueueObject(this->name);
     compteur++;
 }
 
 OHoareMonitor::~OHoareMonitor() {
     delete monitorSignal;
     delete monitorMutex;
+    WaitingLogger::getInstance()->rmQueueObject(this->name);
 }
 
 void OHoareMonitor::monitorIn(const QString& threadName) {
