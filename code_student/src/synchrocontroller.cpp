@@ -1,3 +1,13 @@
+/**
+ *  PCO Labo 5 - Monitoring de concurrence
+ *
+ * @author Antoine NOURAZAR
+ * @author Camilo PINEDA SERNA
+ * @author Emmanuel SCHMID
+ *
+ * @file synchrocontroller.cpp
+ *
+ */
 #include "synchrocontroller.h"
 
 SynchroController::SynchroController()
