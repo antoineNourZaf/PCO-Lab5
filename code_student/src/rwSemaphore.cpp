@@ -29,24 +29,25 @@ void ReaderWriterSemaphoreEqualPrio::lockReading(const QString& threadName) {
     if (nbReader == 1) {
         writer->acquire(threadName); // bloquer les rédacteurs
     }
-    mutex->release();
     ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
+    mutex->release();
     fifo->release(); // le suivant dans la fifo pourra tenter sa chance
 }
 
 void ReaderWriterSemaphoreEqualPrio::unlockReading(const QString& threadName) {
     SynchroController::getInstance()->pause();
     mutex->acquire(threadName);
+    //Fin accès ressources
+    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
     nbReader--;
     if (nbReader == 0) {
         writer->release(); // le dernier lecteur permet debloque l'écriture
     }
-    //Fin accès ressources
-    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
     mutex->release();
 }
 
 void ReaderWriterSemaphoreEqualPrio::lockWriting(const QString& threadName) {
+    SynchroController::getInstance()->pause();
     fifo->acquire(threadName); // le redacteur va bloquer tout ceux qui attendent dans la file
     writer->acquire(threadName);
     //Accès ressources
@@ -54,6 +55,7 @@ void ReaderWriterSemaphoreEqualPrio::lockWriting(const QString& threadName) {
 }
 
 void ReaderWriterSemaphoreEqualPrio::unlockWriting(const QString& threadName) {
+    SynchroController::getInstance()->pause();
     //Fin accès ressources
     ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
 
@@ -65,12 +67,10 @@ void ReaderWriterSemaphoreEqualPrio::unlockWriting(const QString& threadName) {
  * EM Writers Prio
  *******************************************************/
 
-ReaderWriterSemaphoreWritersPrio::ReaderWriterSemaphoreWritersPrio(): mutexReaders(new OSemaphore(1)), mutexWriters(new OSemaphore(1)), writer(new OSemaphore(1)), reader(new OSemaphore(1)), mutex(new OSemaphore(1)), nbReaders(0), nbWriters(0)
-{
+RWSemaphorePrioWriter::RWSemaphorePrioWriter(): mutexReaders(new OSemaphore(1)), mutexWriters(new OSemaphore(1)),
+    writer(new OSemaphore(1)), reader(new OSemaphore(1)), mutex(new OSemaphore(1)), nbReaders(0), nbWriters(0){}
 
-}
-
-ReaderWriterSemaphoreWritersPrio::~ReaderWriterSemaphoreWritersPrio() {
+RWSemaphorePrioWriter::~RWSemaphorePrioWriter() {
         delete mutexReaders;
         delete mutexWriters;
         delete writer;
@@ -78,7 +78,8 @@ ReaderWriterSemaphoreWritersPrio::~ReaderWriterSemaphoreWritersPrio() {
         delete mutex;
 }
 
-void ReaderWriterSemaphoreWritersPrio::lockReading(const QString& threadName) {
+void RWSemaphorePrioWriter::lockReading(const QString& threadName) {
+    SynchroController::getInstance()->pause();
     mutexReaders->acquire(threadName); // seulement 1 lecteur peut entrer
     reader->acquire(threadName); // un redacteur va bloquer les rédacteurs et les lecteurs
     mutex->acquire(threadName);
@@ -86,15 +87,27 @@ void ReaderWriterSemaphoreWritersPrio::lockReading(const QString& threadName) {
     if (nbReaders == 1) { // le premier lecteur
         writer->acquire(threadName); // va bloquer les rédacteurs
     }
-    //Accès ressources
-    ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
-
     mutex->release(); // relachement de la lecteur
     reader->release();
     mutexReaders->release();
+    //Accès ressources
+    ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
 }
 
-void ReaderWriterSemaphoreWritersPrio::lockWriting(const QString& threadName) {
+void RWSemaphorePrioWriter::unlockReading(const QString& threadName) {
+    SynchroController::getInstance()->pause();
+    mutex->acquire(threadName);
+    nbReaders--;
+    if (nbReaders == 0) { // le dernier lecteur
+        writer->release(); // permet aux rédacteurs de passer
+    }
+    mutex->release();
+    //Fin accès ressources
+    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
+}
+
+void RWSemaphorePrioWriter::lockWriting(const QString& threadName) {
+    SynchroController::getInstance()->pause();
     mutexWriters->acquire(threadName);
     nbWriters++;
     if (nbWriters == 1) {
@@ -102,30 +115,21 @@ void ReaderWriterSemaphoreWritersPrio::lockWriting(const QString& threadName) {
     }
     mutexWriters->release();
     writer->acquire(threadName); // si un rédacteur arrive alors que le premier lecteur est en train d'accéder
+
+    //Accès ressources
+    ((ReadWriteLogger*) WaitingLogger::getInstance())->addResourceAccess(threadName);
 }
 
-void ReaderWriterSemaphoreWritersPrio::unlockReading(const QString& threadName) {
-    mutex->acquire(threadName);
-    nbReaders--;
-    if (nbReaders == 0) { // le dernier lecteur
-        writer->release(); // permet aux rédacteurs de passer
-    }
-    //Fin accès ressources
-    ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
 
-    mutex->release();
-}
-
-void ReaderWriterSemaphoreWritersPrio::unlockWriting(const QString& threadName) {
+void RWSemaphorePrioWriter::unlockWriting(const QString& threadName) {
+    SynchroController::getInstance()->pause();
     writer->release();
     mutexWriters->acquire(threadName);
     nbWriters--;
     if (nbWriters == 0) { // le dernier rédacteur
         reader->release(); // va libérer les lecteurs
     }
+    mutexWriters->release();
     //Fin accès ressources
     ((ReadWriteLogger*) WaitingLogger::getInstance())->removeResourceAccess(threadName);
-    mutexWriters->release();
 }
-
-

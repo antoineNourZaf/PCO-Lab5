@@ -12,8 +12,8 @@
 
 #include "mythread.h"
 
-#define NB_READER 3
-#define NB_WRITER 0
+#define NB_READER 15
+#define NB_WRITER 10
 
 using namespace std;
 

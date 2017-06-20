@@ -4,30 +4,32 @@
 
 int OSemaphore::compteur=0;
 
-OSemaphore::OSemaphore(int n):name("Semaphore" + QString::number(compteur)),semaphore(new QSemaphore(n))
+OSemaphore::OSemaphore(int n):name("Semaphore" + QString::number(compteur)),semaphore(new QSemaphore(n)), nbPermission(n)
 {
-    nbPermission = n;
-    logger = WaitingLogger::getInstance();
+    nbSlotFree = nbPermission;
     compteur++;
-    logger->creatQueueObject(this->name);
+    WaitingLogger::getInstance()->creatQueueObject(this->name);
 }
 
 OSemaphore::~OSemaphore(){
     delete semaphore;
-    logger->rmQueueObject(this->name);
+     WaitingLogger::getInstance()->rmQueueObject(this->name);
 }
 
 
 void OSemaphore::acquire(const QString& threadName){
-    logger->addWaiting(threadName,name);
-    semaphore->acquire();
-    logger->removeWaiting(threadName,name);
+    if(!tryAcquire()){
+        WaitingLogger::getInstance()->addWaiting(threadName,name);
+        semaphore->acquire();
+        WaitingLogger::getInstance()->removeWaiting(threadName,name);
+    }
 }
 
 void OSemaphore::release(){
     semaphore->release();
+    nbSlotFree++;
 }
 
 bool OSemaphore::tryAcquire(){
-    return tryAcquire();
+    return semaphore->tryAcquire();
 }

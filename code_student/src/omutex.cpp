@@ -2,21 +2,24 @@
 #include "waitinglogger.h"
 #include <iostream>
 
-OMutex::OMutex(WaitingLogger* waitingLogger)
+OMutex::OMutex()
 {
-    logger = waitingLogger;
-    logger->creatQueueObject(this->name);
+    WaitingLogger::getInstance()->creatQueueObject(this->name);
+    slotFree= true;
 }
 
 OMutex::~OMutex(){
     this->mutex.~QMutex();
-    logger->rmQueueObject(this->name);
+    WaitingLogger::getInstance()->rmQueueObject(this->name);
 }
 
 void OMutex::lock(const QString& threadName){
-    logger->addWaiting(threadName,name);
+
+    if(!slotFree)
+         WaitingLogger::getInstance()->addWaiting(threadName,name);
     mutex.lock();
-    logger->removeWaiting(threadName,name); //IL L'A TRAITER DONC PLUS DANS LA FILE
+    slotFree = false;
+     WaitingLogger::getInstance()->removeWaiting(threadName,name); //IL L'A TRAITER DONC PLUS DANS LA FILE
 }
 
 bool OMutex::tryLock(){
@@ -25,5 +28,6 @@ bool OMutex::tryLock(){
 }
 
 void OMutex::unlock(){
+    slotFree = true;
     mutex.unlock();
 }

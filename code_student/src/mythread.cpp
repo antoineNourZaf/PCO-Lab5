@@ -16,11 +16,13 @@ ReaderThread::ReaderThread(AbstractReaderWriter* protocole) : MyThread(protocole
 }
 
 void ReaderThread::run() {
-
+    int nbtour = 3;
     while (true) {
         readerWriter->lockReading(QThread::objectName());
         cout << "Task " << objectName().toStdString() << endl;
+        usleep((int)((float)50000*rand()/(RAND_MAX+1.0)));
         readerWriter->unlockReading(QThread::objectName());
+        nbtour--;
     }
 }
 
@@ -29,10 +31,12 @@ WriterThread::WriterThread(AbstractReaderWriter* protocole) : MyThread(protocole
 }
 
 void WriterThread::run() {
-
+    int nbtour = 3;
     while (true) {
         readerWriter->lockWriting(QThread::objectName());
         cout << "Task " << objectName().toStdString() << endl;
+        usleep((int)((float)50000*rand()/(RAND_MAX+1.0)));
         readerWriter->unlockWriting(QThread::objectName());
+        nbtour--;
     }
 }

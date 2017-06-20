@@ -34,9 +34,6 @@ public:
     virtual void unlockWriting(const QString& name);
 };
 
-class ReaderWriterHoare;
-
-
 // **************************************************
 // *             Redacteurs prioritaire
 // **************************************************
@@ -44,24 +41,24 @@ class ReaderWriterHoare;
 /**
  * @brief The ReaderWriterSemaphoreWritersPrio class
  */
-class ReaderWriterSemaphoreWritersPrio : public AbstractReaderWriter {
+class RWSemaphorePrioWriter : public AbstractReaderWriter {
 protected:
     OSemaphore* mutexReaders;
     OSemaphore* mutexWriters;
     OSemaphore* writer;
     OSemaphore* reader;
     OSemaphore* mutex;
-    int nbReaders;
-    int nbWriters;
+    int nbReaders, nbWriters;
 
 public:
-    ReaderWriterSemaphoreWritersPrio();
-    virtual ~ReaderWriterSemaphoreWritersPrio();
+    RWSemaphorePrioWriter();
+    virtual ~RWSemaphorePrioWriter();
     virtual void lockReading(const QString& name);
     virtual void lockWriting(const QString& name);
     virtual void unlockReading(const QString& name);
     virtual void unlockWriting(const QString& name);
 };
+
 
 /**
  * @brief The ReaderWriterHoarWritersPrio class

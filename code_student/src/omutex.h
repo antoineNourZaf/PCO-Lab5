@@ -7,20 +7,16 @@
 
 class OMutex {
 private:
-
     const QString name = "Mutex";
     QMutex mutex;
-    WaitingLogger *logger;
+    bool slotFree;
 
 public:
 
-    OMutex(WaitingLogger* waitingLogger);
+    OMutex();
     ~OMutex();
-
     void lock(const QString& threadName);
-
     bool tryLock();
-
     void unlock();
 };
 
